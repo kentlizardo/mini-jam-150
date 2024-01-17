@@ -19,12 +19,18 @@ func _ready() -> void:
 func stage_scene(scene: PackedScene) -> void:
 	stage_orphan(scene.instantiate())
 func stage_orphan(node: Node) -> void:
-	_stage_orphan.call_deferred(node)
-func _stage_orphan(node : Node) -> void:
+	_stage_orphan(node)
+func _stage_orphan(node: Node) -> void:
 	if is_staging:
 		push_error("Staging a new NodeTree while another is being staged.")
+		await staging_finished
+	is_staging = true
 	try_unstage()
 	add_child.call_deferred(node)
+	await node.ready
+	stage = node
+	is_staging = false
+	staging_finished.emit(node)
 
 func unstage() -> void:
 	assert(is_instance_valid(stage), "Error: Should not be unstaging an invalid node")
