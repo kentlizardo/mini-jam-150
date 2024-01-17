@@ -11,5 +11,14 @@ config_version=5
 [application]
 
 config/name="Blank Project"
+run/main_scene="res://scenes/root.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
 config/icon="res://icon.svg"
+
+[autoload]
+
+App="*res://scenes/auto/app.gd"
+
+[debug]
+
+gdscript/warnings/untyped_declaration=2
