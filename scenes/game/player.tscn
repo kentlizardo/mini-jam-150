@@ -24,7 +24,7 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id="Animation_1rl1d"]
 resource_name = "mace_attack"
-length = 0.8
+length = 0.6
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -32,7 +32,7 @@ tracks/0/path = NodePath("Mace:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.163003, 0.230359, 0.4, 0.6),
+"times": PackedFloat32Array(0, 0.1, 0.156365, 0.336888, 0.497714),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1),
 "update": 1,
 "values": [0, 1, 2, 3, 0]
@@ -44,7 +44,7 @@ tracks/1/path = NodePath(".")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0.3),
+"times": PackedFloat32Array(0.2),
 "transitions": PackedFloat32Array(1),
 "values": [{
 "args": [],
@@ -85,5 +85,6 @@ libraries = {
 
 [node name="Mace" type="Sprite2D" parent="."]
 position = Vector2(100, 100)
+scale = Vector2(-1, 1)
 texture = ExtResource("2_mfetd")
 hframes = 4

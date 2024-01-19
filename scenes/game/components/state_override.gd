@@ -8,4 +8,3 @@ func push() -> void:
 
 func exit_state() -> void:
 	last_state.state_machine.state = last_state
-

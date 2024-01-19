@@ -14,7 +14,6 @@ func _physics_process(delta: float) -> void:
 		if holder is CharacterBody3D:
 			var move := Vector3(player.global_position - holder.global_position)
 			move.y = 0
-			print(move)
 			if move:
 				holder.velocity.x = move.x * SPEED
 				holder.velocity.z = move.z * SPEED
