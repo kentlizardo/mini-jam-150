@@ -15,6 +15,10 @@ run/main_scene="res://scenes/root.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
 config/icon="res://icon.svg"
 
+[autoload]
+
+Global="*res://scenes/auto/global.gd"
+
 [debug]
 
 gdscript/warnings/untyped_declaration=2
@@ -23,6 +27,12 @@ gdscript/warnings/untyped_declaration=2
 
 window/size/viewport_width=1280
 window/size/viewport_height=800
+
+[importer_defaults]
+
+texture={
+"detect_3d/compress_to": 0
+}
 
 [input]
 
@@ -51,3 +61,7 @@ attack={
 "events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":1,"position":Vector2(230, 43),"global_position":Vector2(236, 105),"factor":1.0,"button_index":1,"canceled":false,"pressed":true,"double_click":true,"script":null)
 ]
 }
+
+[rendering]
+
+textures/canvas_textures/default_texture_filter=0

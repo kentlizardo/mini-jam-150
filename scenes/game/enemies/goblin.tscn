@@ -1,0 +1,62 @@
+[gd_scene load_steps=11 format=3 uid="uid://b6ljkcmx8fr4m"]
+
+[ext_resource type="Script" path="res://scenes/game/enemies/goblin.gd" id="1_7cc5t"]
+[ext_resource type="Texture2D" uid="uid://d3lseaphwktsq" path="res://assets/textures/test_enemy.png" id="2_wled4"]
+[ext_resource type="Script" path="res://scenes/game/hurt_box.gd" id="3_6uyd6"]
+[ext_resource type="Script" path="res://scenes/game/components/vision.gd" id="3_nicwl"]
+[ext_resource type="Script" path="res://scenes/game/components/health.gd" id="3_t6ayx"]
+[ext_resource type="Script" path="res://scenes/game/components/state_machine.gd" id="4_l03m5"]
+[ext_resource type="Script" path="res://scenes/game/enemies/search.gd" id="7_655xo"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_6wuck"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ea3db"]
+radius = 1.0
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_w7fbm"]
+radius = 3.0
+
+[node name="Goblin" type="CharacterBody3D" node_paths=PackedStringArray("animation_player")]
+script = ExtResource("1_7cc5t")
+animation_player = NodePath("AnimationPlayer")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_6wuck")
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+pixel_size = 0.02
+billboard = 2
+texture_filter = 2
+texture = ExtResource("2_wled4")
+
+[node name="Vision" type="Node" parent="."]
+script = ExtResource("3_nicwl")
+
+[node name="Health" type="Node" parent="."]
+script = ExtResource("3_t6ayx")
+
+[node name="HurtBox" type="Area3D" parent="."]
+script = ExtResource("3_6uyd6")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HurtBox"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_ea3db")
+
+[node name="VisionBox" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VisionBox"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CylinderShape3D_w7fbm")
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+script = ExtResource("4_l03m5")
+initial_state = NodePath("Search")
+
+[node name="Search" type="Node" parent="StateMachine"]
+script = ExtResource("7_655xo")
+
+[connection signal="damaged" from="HurtBox" to="Health" method="damage"]

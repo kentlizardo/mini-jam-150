@@ -2,8 +2,11 @@ class_name Player extends CharacterBody3D
 
 const SPEED = 5.0
 
+func _init() -> void:
+	add_to_group("player")
+
 func _ready() -> void:
-	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	_capture_mouse()
 
 func _physics_process(delta: float) -> void:
 	# Get the input direction and handle the movement/deceleration.
@@ -24,15 +27,17 @@ func _unhandled_input(event: InputEvent) -> void:
 		if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
 			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 		else:
-			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-			Input.warp_mouse(get_window().size / 2)
+			_capture_mouse()
 		get_viewport().set_input_as_handled()
 	if event is InputEventMouseButton:
 		if event.pressed:
 			if Input.mouse_mode != Input.MOUSE_MODE_CAPTURED:
-				Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-				Input.warp_mouse(get_window().size / 2)
+				_capture_mouse()
 				get_viewport().set_input_as_handled()
 	if event is InputEventMouseMotion:
 		var x_delta : float = event.relative.x
 		rotate_y(-x_delta * 0.01)
+
+func _capture_mouse() -> void:
+	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	Input.warp_mouse(get_window().size / 2)
