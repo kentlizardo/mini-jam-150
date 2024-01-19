@@ -1,7 +1,8 @@
-[gd_scene load_steps=9 format=3 uid="uid://dxus8oa1fjdgb"]
+[gd_scene load_steps=8 format=3 uid="uid://dxus8oa1fjdgb"]
 
 [ext_resource type="Texture2D" uid="uid://bw5u256we4oco" path="res://icon.svg" id="1_0f5a1"]
-[ext_resource type="Script" path="res://scenes/game/player.gd" id="1_katdk"]
+[ext_resource type="Script" path="res://scenes/root.gd" id="1_4jgp6"]
+[ext_resource type="PackedScene" uid="uid://pqwhddnjm8an" path="res://scenes/game/player.tscn" id="2_kys7d"]
 [ext_resource type="PackedScene" uid="uid://b6ljkcmx8fr4m" path="res://scenes/game/enemies/goblin.tscn" id="3_ernnx"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_w6a1v"]
@@ -13,65 +14,9 @@ albedo_texture = ExtResource("1_0f5a1")
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_udyia"]
 data = PackedVector3Array(10, 0, 10, -10, 0, 10, 10, 0, -10, -10, 0, 10, -10, 0, -10, 10, 0, -10)
 
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_nwppc"]
-
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_0sx7l"]
-
 [node name="Root" type="Node"]
-
-[node name="SubViewportContainer" type="SubViewportContainer" parent="."]
-texture_filter = 3
-custom_minimum_size = Vector2(800, 800)
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -20.0
-offset_right = 20.0
-offset_bottom = 20.0
-grow_horizontal = 2
-grow_vertical = 2
-stretch = true
-stretch_shrink = 4
-
-[node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
-handle_input_locally = false
-canvas_item_default_texture_filter = 0
-size = Vector2i(200, 200)
-render_target_update_mode = 4
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="SubViewportContainer/SubViewport"]
-mesh = SubResource("PlaneMesh_w6a1v")
-skeleton = NodePath("../../..")
-surface_material_override/0 = SubResource("StandardMaterial3D_1cnfs")
-
-[node name="StaticBody3D" type="StaticBody3D" parent="SubViewportContainer/SubViewport/MeshInstance3D"]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="SubViewportContainer/SubViewport/MeshInstance3D/StaticBody3D"]
-shape = SubResource("ConcavePolygonShape3D_udyia")
-
-[node name="Player" type="CharacterBody3D" parent="SubViewportContainer/SubViewport"]
-axis_lock_linear_y = true
-script = ExtResource("1_katdk")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="SubViewportContainer/SubViewport/Player"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-mesh = SubResource("CapsuleMesh_nwppc")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="SubViewportContainer/SubViewport/Player"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-shape = SubResource("CapsuleShape3D_0sx7l")
-
-[node name="Camera3D" type="Camera3D" parent="SubViewportContainer/SubViewport/Player"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-
-[node name="OmniLight3D" type="OmniLight3D" parent="SubViewportContainer/SubViewport/Player"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
-
-[node name="Node3D" parent="SubViewportContainer/SubViewport" instance=ExtResource("3_ernnx")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, 0)
+process_mode = 3
+script = ExtResource("1_4jgp6")
 
 [node name="LeftPanel" type="Panel" parent="."]
 custom_minimum_size = Vector2(240, 800)
@@ -95,3 +40,44 @@ offset_top = -400.0
 offset_bottom = 400.0
 grow_horizontal = 0
 grow_vertical = 2
+
+[node name="Game" type="Node" parent="."]
+process_mode = 1
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="Game"]
+texture_filter = 3
+custom_minimum_size = Vector2(800, 800)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -400.0
+offset_top = -400.0
+offset_right = 400.0
+offset_bottom = 400.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch = true
+stretch_shrink = 4
+
+[node name="SubViewport" type="SubViewport" parent="Game/SubViewportContainer"]
+handle_input_locally = false
+canvas_item_default_texture_filter = 0
+size = Vector2i(200, 200)
+render_target_update_mode = 4
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/SubViewportContainer/SubViewport"]
+mesh = SubResource("PlaneMesh_w6a1v")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_1cnfs")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Game/SubViewportContainer/SubViewport/MeshInstance3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/SubViewportContainer/SubViewport/MeshInstance3D/StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_udyia")
+
+[node name="Player" parent="Game/SubViewportContainer/SubViewport" instance=ExtResource("2_kys7d")]
+
+[node name="Node3D" parent="Game/SubViewportContainer/SubViewport" instance=ExtResource("3_ernnx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, 0)

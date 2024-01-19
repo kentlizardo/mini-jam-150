@@ -1,7 +1,10 @@
 class_name State extends Node
 
-var holder : Node
-var entity_holder : Entity:
+var state_machine: StateMachine
+var holder: Node:
+	get:
+		return state_machine.holder
+var entity_holder: Entity:
 	get:
 		return holder as Entity
 
@@ -11,12 +14,13 @@ func _enter() -> void:
 func _exit() -> void:
 	Debug.abstr_func(self)
 
-func enter(new_holder : Node) -> void:
-	holder = new_holder
+func enter(state_machine : StateMachine) -> void:
+	self.state_machine = state_machine
+	set_process(true)
 	set_process(true)
 	_enter()
 
 func exit() -> void:
-	holder = null
-	set_process(false)
 	_exit()
+	state_machine = null
+	set_process(false)

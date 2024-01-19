@@ -1,6 +1,9 @@
 class_name Player extends CharacterBody3D
 
+const SLASH_PROJECTILE_TEMPLATE = preload("res://scenes/game/slash_projectile.tscn")
 const SPEED = 5.0
+
+@export var camera : Camera3D = null
 
 func _init() -> void:
 	add_to_group("player")
@@ -25,14 +28,15 @@ func _physics_process(delta: float) -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if Input.is_action_just_pressed("ui_cancel"):
 		if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
-			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-		else:
-			_capture_mouse()
-		get_viewport().set_input_as_handled()
+			_uncapture_mouse()
+			get_viewport().set_input_as_handled()
 	if event is InputEventMouseButton:
 		if event.pressed:
 			if Input.mouse_mode != Input.MOUSE_MODE_CAPTURED:
 				_capture_mouse()
+				get_viewport().set_input_as_handled()
+			else:
+				_attack()
 				get_viewport().set_input_as_handled()
 	if event is InputEventMouseMotion:
 		var x_delta : float = event.relative.x
@@ -41,3 +45,9 @@ func _unhandled_input(event: InputEvent) -> void:
 func _capture_mouse() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	Input.warp_mouse(get_window().size / 2)
+func _uncapture_mouse() -> void:
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+
+func _attack() -> void:
+	var slash := SLASH_PROJECTILE_TEMPLATE.instantiate()
+	camera.add_child(slash)

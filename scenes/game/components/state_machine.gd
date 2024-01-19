@@ -2,15 +2,19 @@ class_name StateMachine extends Node
 
 @export var initial_state : State
 
+var holder : Node:
+	get:
+		return get_parent()
+
 var state : State:
 	set(x):
 		if state:
 			state.exit()
 		state = x
 		if state:
-			state.enter(get_parent())
+			state.enter(self)
 
 func _ready() -> void:
-	if !get_parent().is_node_ready():
-		await get_parent().ready
+	if !holder.is_node_ready():
+		await holder.ready
 	state = initial_state

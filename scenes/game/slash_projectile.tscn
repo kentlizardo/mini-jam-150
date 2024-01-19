@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://b2o61f5vvlagt"]
+
+[ext_resource type="Script" path="res://scenes/game/slash_projectile.gd" id="1_ya0yj"]
+
+[node name="SlashArea" type="Area3D"]
+script = ExtResource("1_ya0yj")
+owner_groups = Array[String](["player"])
+
+[node name="Col" type="CollisionPolygon3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0)
+polygon = PackedVector2Array(0, 0, 0.5, 1.5, -0.5, 1.5)
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
