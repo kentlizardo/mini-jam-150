@@ -1,11 +1,16 @@
 extends Area3D
 
+const PROJ_SPEED = 2.0
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
+var speed := Vector3.ZERO
 
+func damage(damage: int, damage_type: Global.DamageType, sender: Node) -> void:
+	if sender is Player:
+		var move := Vector3(global_position - sender.global_position)
+		speed = move.normalized()
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func _physics_process(delta: float) -> void:
+	global_position += PROJ_SPEED * speed
+
+func _on_area_entered(area: Area3D) -> void:
 	pass

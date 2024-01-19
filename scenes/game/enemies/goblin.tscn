@@ -26,11 +26,9 @@ sprite = NodePath("Sprite3D")
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("CapsuleShape3D_6wuck")
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 pixel_size = 0.02
 billboard = 2
 texture_filter = 2
@@ -41,6 +39,7 @@ script = ExtResource("3_t6ayx")
 health = 3
 
 [node name="HurtBox" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
 script = ExtResource("3_6uyd6")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="HurtBox"]
@@ -48,6 +47,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("CapsuleShape3D_ea3db")
 
 [node name="VisionBox" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
 script = ExtResource("3_nicwl")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="VisionBox"]

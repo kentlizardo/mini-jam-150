@@ -4,5 +4,5 @@ class_name HurtBox extends Area3D
 
 signal damaged(damage: int)
 
-func damage(damage: int, damage_type: Global.DamageType) -> void:
+func damage(damage: int, damage_type: Global.DamageType, sender: Node) -> void:
 	damaged.emit(maxi(damage - defense, 0))

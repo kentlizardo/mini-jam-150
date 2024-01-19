@@ -11,6 +11,7 @@ var state : State:
 		if state:
 			state.exit()
 		state = x
+		print(holder.name + " " + state.name)
 		if state:
 			state.enter()
 

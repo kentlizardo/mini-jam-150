@@ -1,9 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://dxus8oa1fjdgb"]
+[gd_scene load_steps=10 format=3 uid="uid://dxus8oa1fjdgb"]
 
 [ext_resource type="Texture2D" uid="uid://bw5u256we4oco" path="res://icon.svg" id="1_0f5a1"]
 [ext_resource type="Script" path="res://scenes/root.gd" id="1_4jgp6"]
 [ext_resource type="PackedScene" uid="uid://pqwhddnjm8an" path="res://scenes/game/player.tscn" id="2_kys7d"]
 [ext_resource type="PackedScene" uid="uid://b6ljkcmx8fr4m" path="res://scenes/game/enemies/goblin.tscn" id="3_ernnx"]
+[ext_resource type="PackedScene" uid="uid://b8xrsmnjhih1e" path="res://scenes/game/light_projectile.tscn" id="5_kxbvh"]
+[ext_resource type="Script" path="res://scenes/game/map_generator.gd" id="6_8sy5e"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_w6a1v"]
 size = Vector2(20, 20)
@@ -78,6 +80,20 @@ surface_material_override/0 = SubResource("StandardMaterial3D_1cnfs")
 shape = SubResource("ConcavePolygonShape3D_udyia")
 
 [node name="Player" parent="Game/SubViewportContainer/SubViewport" instance=ExtResource("2_kys7d")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 
-[node name="Node3D" parent="Game/SubViewportContainer/SubViewport" instance=ExtResource("3_ernnx")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, 0)
+[node name="Goblin" parent="Game/SubViewportContainer/SubViewport" instance=ExtResource("3_ernnx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 1, -5)
+
+[node name="Light" parent="Game/SubViewportContainer/SubViewport" instance=ExtResource("5_kxbvh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0)
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("6_8sy5e")
