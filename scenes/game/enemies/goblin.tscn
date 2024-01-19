@@ -17,9 +17,10 @@ radius = 1.0
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_w7fbm"]
 radius = 3.0
 
-[node name="Goblin" type="CharacterBody3D" node_paths=PackedStringArray("animation_player")]
+[node name="Goblin" type="CharacterBody3D" node_paths=PackedStringArray("animation_player", "sprite")]
 script = ExtResource("1_7cc5t")
 animation_player = NodePath("AnimationPlayer")
+sprite = NodePath("Sprite3D")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 
@@ -34,11 +35,9 @@ billboard = 2
 texture_filter = 2
 texture = ExtResource("2_wled4")
 
-[node name="Vision" type="Node" parent="."]
-script = ExtResource("3_nicwl")
-
 [node name="Health" type="Node" parent="."]
 script = ExtResource("3_t6ayx")
+health = 3
 
 [node name="HurtBox" type="Area3D" parent="."]
 script = ExtResource("3_6uyd6")
@@ -48,6 +47,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("CapsuleShape3D_ea3db")
 
 [node name="VisionBox" type="Area3D" parent="."]
+script = ExtResource("3_nicwl")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="VisionBox"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
@@ -59,6 +59,8 @@ initial_state = NodePath("Search")
 
 [node name="Search" type="Node" parent="StateMachine"]
 script = ExtResource("7_655xo")
+
+[node name="Hit" type="Node" parent="StateMachine"]
 
 [node name="Dying" type="Node" parent="StateMachine"]
 script = ExtResource("8_xp0lr")

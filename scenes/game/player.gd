@@ -3,7 +3,8 @@ class_name Player extends CharacterBody3D
 const SLASH_PROJECTILE_TEMPLATE = preload("res://scenes/game/slash_projectile.tscn")
 const SPEED = 5.0
 
-@export var camera : Camera3D = null
+@export var camera : Camera3D
+@export var animation_player : AnimationPlayer
 
 func _init() -> void:
 	add_to_group("player")
@@ -36,7 +37,7 @@ func _unhandled_input(event: InputEvent) -> void:
 				_capture_mouse()
 				get_viewport().set_input_as_handled()
 			else:
-				_attack()
+				animation_player.play("mace_attack")
 				get_viewport().set_input_as_handled()
 	if event is InputEventMouseMotion:
 		var x_delta : float = event.relative.x
