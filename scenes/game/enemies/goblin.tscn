@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://b6ljkcmx8fr4m"]
+[gd_scene load_steps=12 format=3 uid="uid://b6ljkcmx8fr4m"]
 
 [ext_resource type="Script" path="res://scenes/game/enemies/goblin.gd" id="1_7cc5t"]
 [ext_resource type="Texture2D" uid="uid://d3lseaphwktsq" path="res://assets/textures/test_enemy.png" id="2_wled4"]
@@ -6,7 +6,8 @@
 [ext_resource type="Script" path="res://scenes/game/components/vision.gd" id="3_nicwl"]
 [ext_resource type="Script" path="res://scenes/game/components/health.gd" id="3_t6ayx"]
 [ext_resource type="Script" path="res://scenes/game/components/state_machine.gd" id="4_l03m5"]
-[ext_resource type="Script" path="res://scenes/game/enemies/search.gd" id="7_655xo"]
+[ext_resource type="Script" path="res://scenes/game/enemies/states/search.gd" id="7_655xo"]
+[ext_resource type="Script" path="res://scenes/game/enemies/states/dying.gd" id="8_xp0lr"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_6wuck"]
 
@@ -59,4 +60,8 @@ initial_state = NodePath("Search")
 [node name="Search" type="Node" parent="StateMachine"]
 script = ExtResource("7_655xo")
 
+[node name="Dying" type="Node" parent="StateMachine"]
+script = ExtResource("8_xp0lr")
+
+[connection signal="die" from="Health" to="StateMachine/Dying" method="push"]
 [connection signal="damaged" from="HurtBox" to="Health" method="damage"]

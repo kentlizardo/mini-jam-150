@@ -12,9 +12,12 @@ var state : State:
 			state.exit()
 		state = x
 		if state:
-			state.enter(self)
+			state.enter()
 
 func _ready() -> void:
 	if !holder.is_node_ready():
 		await holder.ready
 	state = initial_state
+
+func set_state(state: State) -> void:
+	self.state = state
