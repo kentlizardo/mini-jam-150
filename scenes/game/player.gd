@@ -73,9 +73,9 @@ func release_light() -> void:
 	if charged:
 		charged = false
 		light_proj = LIGHT_PROJECTILE_TEMPLATE.instantiate() as LightProjectile
+		get_parent().add_child(light_proj)
 		light_proj.global_position = camera_forward.global_position
 		light_proj.linear_velocity = get_real_velocity()
-		get_parent().add_child(light_proj)
 func start_recall() -> void:
 	light_proj.gravitate_towards = self
 func stop_recall() -> void:
