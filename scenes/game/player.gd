@@ -46,10 +46,16 @@ func _unhandled_input(event: InputEvent) -> void:
 		mace_anim_player.play("mace_attack")
 		get_viewport().set_input_as_handled()
 	if Input.is_action_just_pressed("secondary"):
-		start_light()
+		if !is_instance_valid(light_proj):
+			start_light()
+		else:
+			start_recall()
 		get_viewport().set_input_as_handled()
 	if Input.is_action_just_released("secondary"):
-		release_light()
+		if !is_instance_valid(light_proj):
+			release_light()
+		else:
+			stop_recall()
 		get_viewport().set_input_as_handled()
 
 func _capture_mouse() -> void:
@@ -58,17 +64,21 @@ func _capture_mouse() -> void:
 func _uncapture_mouse() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
+var light_proj : LightProjectile
 func start_light() -> void:
 	light_anim_player.stop()
 	light_anim_player.play("light_summon")
-
 func release_light() -> void:
 	light_anim_player.stop()
 	if charged:
 		charged = false
-		var light := LIGHT_PROJECTILE_TEMPLATE.instantiate() as Node3D
-		light.global_position = camera_forward.global_position
-		get_parent().add_child(light)
+		light_proj = LIGHT_PROJECTILE_TEMPLATE.instantiate() as LightProjectile
+		light_proj.global_position = camera_forward.global_position
+		get_parent().add_child(light_proj)
+func start_recall() -> void:
+	light_proj.gravitate_towards = self
+func stop_recall() -> void:
+	light_proj.gravitate_towards = null
 
 func _attack() -> void:
 	var slash := SLASH_PROJECTILE_TEMPLATE.instantiate()
