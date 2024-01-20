@@ -75,7 +75,7 @@ map_root = NodePath("../../MapRoot")
 [node name="MapRoot" type="Node3D" parent="Game/SubViewportContainer/SubViewport"]
 
 [node name="Player" parent="Game/SubViewportContainer/SubViewport" node_paths=PackedStringArray("camera", "camera_forward", "mace_anim_player", "light_anim_player", "walk_pivot") instance=ExtResource("5_kxbvh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 camera = NodePath("Camera3D")
 camera_forward = NodePath("Camera3D/Node3D")
 mace_anim_player = NodePath("MacePlayer")

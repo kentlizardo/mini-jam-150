@@ -1,10 +1,14 @@
-[gd_scene load_steps=3 format=3 uid="uid://872l0sf8vi4a"]
+[gd_scene load_steps=5 format=3 uid="uid://872l0sf8vi4a"]
+
+[ext_resource type="ArrayMesh" uid="uid://w1wq14614bga" path="res://assets/models/wall.obj" id="1_smgci"]
+[ext_resource type="Texture2D" uid="uid://bu7nul7bbn5nk" path="res://assets/textures/tiles.png" id="2_06hsp"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_v8wi1"]
 size = Vector3(2, 2, 2)
 
-[sub_resource type="BoxMesh" id="BoxMesh_mfwha"]
-size = Vector3(2, 2, 2)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yvjfv"]
+albedo_texture = ExtResource("2_06hsp")
+texture_filter = 2
 
 [node name="StaticBody3D" type="StaticBody3D"]
 
@@ -13,4 +17,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("BoxShape3D_v8wi1")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="CollisionShape3D"]
-mesh = SubResource("BoxMesh_mfwha")
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, -3, -1, -3)
+mesh = ExtResource("1_smgci")
+surface_material_override/0 = SubResource("StandardMaterial3D_yvjfv")

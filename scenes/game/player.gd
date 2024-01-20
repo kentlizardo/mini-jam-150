@@ -95,3 +95,15 @@ func _attack() -> void:
 var charged := false
 func _charge() -> void:
 	charged = true
+
+const SHAKE_FRAME_LEN := 1.0 / 30
+var _shake_timer := 0.0
+var shake_amount := 0
+func _process(delta: float) -> void:
+	if shake_amount > 0:
+		_shake_timer += delta
+		if _shake_timer > SHAKE_FRAME_LEN:
+			_shake_timer = 0.0
+			walk_pivot.position = Vector2(randi_range(-shake_amount, shake_amount), randi_range(-shake_amount, shake_amount))
+	else:
+		walk_pivot.position = Vector2.ZERO

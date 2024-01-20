@@ -1,0 +1,43 @@
+[gd_scene load_steps=8 format=3 uid="uid://vqcrkykkf8cc"]
+
+[ext_resource type="Script" path="res://scenes/game/enemies/armor.gd" id="1_bs6vd"]
+[ext_resource type="Texture2D" uid="uid://d3lseaphwktsq" path="res://assets/textures/test_enemy.png" id="1_dif18"]
+[ext_resource type="Script" path="res://scenes/game/hurt_box.gd" id="2_gtdoo"]
+[ext_resource type="Script" path="res://scenes/game/components/health.gd" id="2_s5nq5"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_c2exf"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_6e66u"]
+size = Vector3(0.8, 2, 0.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_68qqw"]
+size = Vector3(1, 2, 0.38)
+
+[node name="Armor" type="CharacterBody3D"]
+script = ExtResource("1_bs6vd")
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+pixel_size = 0.02
+billboard = 2
+texture_filter = 2
+texture = ExtResource("1_dif18")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_c2exf")
+
+[node name="Health" type="Node" parent="."]
+script = ExtResource("2_s5nq5")
+
+[node name="HurtBox" type="Area3D" parent="."]
+script = ExtResource("2_gtdoo")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HurtBox"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.15757)
+shape = SubResource("BoxShape3D_6e66u")
+
+[node name="Front" type="Area3D" parent="."]
+script = ExtResource("2_gtdoo")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Front"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.221147)
+shape = SubResource("BoxShape3D_68qqw")

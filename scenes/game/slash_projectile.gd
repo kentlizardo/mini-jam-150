@@ -20,6 +20,8 @@ func hit_check(node: Node3D) -> void:
 		if node.has_method("damage"):
 			node.damage(damage, Global.DamageType.PHYSICAL, sender)
 			queue_free()
+			if sender is Player:
+				sender.shake_amount += 5
 
 func _ready() -> void:
 	kill()
