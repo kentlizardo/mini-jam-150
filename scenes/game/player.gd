@@ -4,7 +4,7 @@ const SLASH_PROJECTILE_TEMPLATE = preload("res://scenes/game/slash_projectile.ts
 const LIGHT_PROJECTILE_TEMPLATE = preload("res://scenes/game/light_projectile.tscn")
 const SPEED = 10.0
 
-@export var camera : Camera3D
+@export var camera : ShakeCamera
 @export var camera_forward : Node3D
 
 @export var mace_anim_player: AnimationPlayer
@@ -16,6 +16,10 @@ func _init() -> void:
 
 func _ready() -> void:
 	_capture_mouse()
+
+func damage(damage: int, damage_type: Global.DamageType, sender: Node) -> void:
+	print("Player damaged")
+	camera.add_trauma(5.0)
 
 func _physics_process(delta: float) -> void:
 	# Get the input direction and handle the movement/deceleration.

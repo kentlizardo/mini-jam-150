@@ -1,7 +1,7 @@
 class_name LightProjectile extends RigidBody3D
 
-const FAST_SPRITE := preload("res://assets/textures/light_fast.png")
-const NORMAL_SPRITE := preload("res://assets/textures/light.png")
+var FAST_SPRITE := load("res://assets/textures/light_fast.png")
+var NORMAL_SPRITE := load("res://assets/textures/light.png")
 const HIT_SPEED = 60.0
 const GRAVITATION_SPEED = 40.0
 

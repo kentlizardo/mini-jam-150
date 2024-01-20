@@ -21,7 +21,7 @@ func hit_check(node: Node3D) -> void:
 			node.damage(damage, Global.DamageType.PHYSICAL, sender)
 			queue_free()
 			if sender is Player:
-				(sender.walk_pivot as ShakeWeapon).add_trauma(50.0)
+				(sender.walk_pivot as ShakeWeapon).add_trauma(30.0)
 
 func _ready() -> void:
 	kill()
