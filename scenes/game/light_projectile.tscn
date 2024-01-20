@@ -5,7 +5,9 @@
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_n4g6c"]
 
-[node name="Light" type="Area3D"]
+[node name="Light" type="RigidBody3D"]
+axis_lock_linear_y = true
+linear_damp = 2.0
 script = ExtResource("1_7bwmg")
 
 [node name="OmniLight3D" type="OmniLight3D" parent="."]
@@ -18,5 +20,3 @@ texture = ExtResource("1_oy0pg")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("SphereShape3D_n4g6c")
-
-[connection signal="area_entered" from="." to="." method="_on_area_entered"]

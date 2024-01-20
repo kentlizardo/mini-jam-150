@@ -5,6 +5,7 @@ const LIGHT_PROJECTILE_TEMPLATE = preload("res://scenes/game/light_projectile.ts
 const SPEED = 5.0
 
 @export var camera : Camera3D
+@export var camera_forward : Node3D
 @export var mace_anim_player : AnimationPlayer
 @export var light_anim_player : AnimationPlayer
 
@@ -66,7 +67,7 @@ func release_light() -> void:
 	if charged:
 		charged = false
 		var light := LIGHT_PROJECTILE_TEMPLATE.instantiate() as Node3D
-		light.global_position = camera.global_position
+		light.global_position = camera_forward.global_position
 		get_parent().add_child(light)
 
 func _attack() -> void:

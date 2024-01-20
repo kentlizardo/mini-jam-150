@@ -48,10 +48,11 @@ _data = {
 "light_summon": ExtResource("3_6e8db")
 }
 
-[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("camera", "mace_anim_player", "light_anim_player")]
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("camera", "camera_forward", "mace_anim_player", "light_anim_player")]
 axis_lock_linear_y = true
 script = ExtResource("1_igxis")
 camera = NodePath("Camera3D")
+camera_forward = NodePath("Camera3D/Node3D")
 mace_anim_player = NodePath("MacePlayer")
 light_anim_player = NodePath("LightPlayer")
 
@@ -62,7 +63,9 @@ mesh = SubResource("CapsuleMesh_nwppc")
 shape = SubResource("CapsuleShape3D_0sx7l")
 
 [node name="Camera3D" type="Camera3D" parent="."]
-visible = false
+
+[node name="Node3D" type="Node3D" parent="Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
 
 [node name="MacePlayer" type="AnimationPlayer" parent="."]
 libraries = {
