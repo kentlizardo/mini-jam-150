@@ -6,8 +6,10 @@ const SPEED = 10.0
 
 @export var camera : Camera3D
 @export var camera_forward : Node3D
+
 @export var mace_anim_player : AnimationPlayer
 @export var light_anim_player : AnimationPlayer
+@export var walk_pivot : Node2D
 
 func _init() -> void:
 	add_to_group("player")

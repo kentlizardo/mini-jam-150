@@ -1,37 +1,33 @@
-[gd_scene load_steps=6 format=3 uid="uid://b8xrsmnjhih1e"]
+[gd_scene load_steps=6 format=3 uid="uid://0vkvf4usabme"]
 
-[ext_resource type="Script" path="res://scenes/game/light_projectile.gd" id="1_7bwmg"]
-[ext_resource type="Texture2D" uid="uid://hs1ak8761dgy" path="res://assets/textures/light.png" id="1_oy0pg"]
-[ext_resource type="Script" path="res://scenes/game/light_projectile_hitter.gd" id="3_lj4mv"]
+[ext_resource type="Script" path="res://scenes/game/light_projectile.gd" id="1_x0w22"]
+[ext_resource type="Texture2D" uid="uid://hs1ak8761dgy" path="res://assets/textures/light.png" id="2_7tfc6"]
+[ext_resource type="Script" path="res://scenes/game/light_projectile_hitter.gd" id="3_fhpnw"]
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_n4g6c"]
+[sub_resource type="SphereShape3D" id="SphereShape3D_xv42d"]
 radius = 0.4
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_hsuor"]
+[sub_resource type="SphereShape3D" id="SphereShape3D_hlffu"]
 
-[node name="Light" type="RigidBody3D" node_paths=PackedStringArray("sprite")]
-axis_lock_linear_y = true
-linear_damp = 1.0
-script = ExtResource("1_7bwmg")
+[node name="Node3D" type="RigidBody3D" node_paths=PackedStringArray("sprite")]
+script = ExtResource("1_x0w22")
 sprite = NodePath("Sprite3D")
 
-[node name="OmniLight3D" type="OmniLight3D" parent="."]
+[node name="Node3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_xv42d")
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
 pixel_size = 0.02
 billboard = 2
 texture_filter = 2
-texture = ExtResource("1_oy0pg")
+texture = ExtResource("2_7tfc6")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-shape = SubResource("SphereShape3D_n4g6c")
-
-[node name="Area3D" type="Area3D" parent="." node_paths=PackedStringArray("light_proj")]
-script = ExtResource("3_lj4mv")
+[node name="Hitter" type="Area3D" parent="." node_paths=PackedStringArray("light_proj")]
+script = ExtResource("3_fhpnw")
 light_proj = NodePath("..")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
-shape = SubResource("SphereShape3D_hsuor")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Hitter"]
+shape = SubResource("SphereShape3D_hlffu")
 
-[connection signal="area_entered" from="Area3D" to="Area3D" method="_on_area_3d_area_entered"]
-[connection signal="body_entered" from="Area3D" to="Area3D" method="_on_area_3d_body_entered"]
+[connection signal="area_entered" from="Hitter" to="Hitter" method="_on_area_3d_area_entered"]
+[connection signal="body_entered" from="Hitter" to="Hitter" method="_on_area_3d_body_entered"]

@@ -1,11 +1,6 @@
 extends Control
 
-const INITIAL_ROOM_SIZE := Rect2i(0, 0, 24, 80)
-
-enum AxisSplit {
-	HORI,
-	VERT,
-}
+const INITIAL_ROOM_SIZE := Rect2i(-24, -80, 48, 160)
 
 @export var map_root : Node3D
 # References:
@@ -53,7 +48,7 @@ class BSP_Node extends RefCounted:
 
 var root_node: BSP_Node
 
-const tile_size := 4
+const tile_size := 2
 
 func _ready() -> void:
 	root_node = BSP_Node.new(INITIAL_ROOM_SIZE)
@@ -70,25 +65,38 @@ func _draw() -> void:
 		draw_rect(r, Color.PALE_VIOLET_RED, false)
 
 const WALL := preload("res://scenes/game/map/tile_wall.tscn")
-const ROOM_PADDING := Vector2i(0, 0)
+const MIN_PADDING := 2
+const MAX_PADDING := 4
 
-func check_padding(pos: Vector2i, padding: Vector2i, leaf: BSP_Node) -> bool:
-	return pos.x <= padding.x or pos.y <= padding.y or pos.x > leaf.bounds.size.x - padding.x or pos.y > leaf.bounds.size.y - padding.y
+func check_padding(pos: Vector2i, padding: Vector4i, leaf: BSP_Node) -> bool:
+	return pos.x <= padding.x or pos.y <= padding.y or pos.x > leaf.bounds.size.x - padding.w or pos.y > leaf.bounds.size.y - padding.z
 
 var tiles := {} # tile_pos -> 
+
+func set_tile(tile_pos: Vector2i, scene: PackedScene) -> void:
+	if tiles.has(tile_pos):
+		tiles[tile_pos].queue_free()
+	var tile := scene.instantiate()
+	map_root.add_child(tile)
+	tile.position.x = tile_pos.x * 2
+	tile.position.z = tile_pos.y * 2
+	tiles[tile_pos] = tile
+
 func build() -> void:
 	await map_root.ready
-	var global_offset := root_node.bounds.size / 2
+	var rng := RandomNumberGenerator.new()
 	for leaf in root_node.get_leaves():
+		var padding := Vector4i(
+			rng.randi_range(MIN_PADDING,MAX_PADDING),
+			rng.randi_range(MIN_PADDING,MAX_PADDING),
+			rng.randi_range(MIN_PADDING,MAX_PADDING),
+			rng.randi_range(MIN_PADDING,MAX_PADDING),
+		)
 		for y in range(leaf.bounds.size.y):
 			for x in range(leaf.bounds.size.x):
 				var tile_pos := leaf.bounds.position + Vector2i(x,y)
-				if check_padding(Vector2i(x, y), ROOM_PADDING, leaf):
-					var wall := WALL.instantiate()
-					map_root.add_child(wall)
-					wall.global_position.x = (tile_pos.x - global_offset.x) * 2
-					wall.global_position.z = (tile_pos.y - global_offset.y) * 2
-					tiles[tile_pos] = wall
+				if check_padding(Vector2i(x, y), padding, leaf):
+					set_tile(tile_pos, WALL)
 
 #func _ready() -> void:
 	#var bsp := generate_bsp(0, INITIAL_ROOM_SIZE.size.x, 0, INITIAL_ROOM_SIZE.size.y, AxisSplit.values().pick_random())

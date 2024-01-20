@@ -15,7 +15,7 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Mace:frame")
+tracks/0/path = NodePath("Center/WalkPivot/Mace:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -27,7 +27,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Light:frame")
+tracks/1/path = NodePath("Center/WalkPivot/Light:frame")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -48,13 +48,14 @@ _data = {
 "light_summon": ExtResource("3_6e8db")
 }
 
-[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("camera", "camera_forward", "mace_anim_player", "light_anim_player")]
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("camera", "camera_forward", "mace_anim_player", "light_anim_player", "walk_pivot")]
 axis_lock_linear_y = true
 script = ExtResource("1_igxis")
 camera = NodePath("Camera3D")
 camera_forward = NodePath("Camera3D/Node3D")
 mace_anim_player = NodePath("MacePlayer")
 light_anim_player = NodePath("LightPlayer")
+walk_pivot = NodePath("Center/WalkPivot")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("CapsuleMesh_nwppc")
@@ -77,12 +78,15 @@ libraries = {
 "": SubResource("AnimationLibrary_71aip")
 }
 
-[node name="Mace" type="Sprite2D" parent="."]
+[node name="Center" type="Node2D" parent="."]
 position = Vector2(160, 100)
+
+[node name="WalkPivot" type="Node2D" parent="Center"]
+
+[node name="Mace" type="Sprite2D" parent="Center/WalkPivot"]
 texture = ExtResource("2_mfetd")
 hframes = 4
 
-[node name="Light" type="Sprite2D" parent="."]
-position = Vector2(160, 100)
+[node name="Light" type="Sprite2D" parent="Center/WalkPivot"]
 texture = ExtResource("3_3lhi1")
 hframes = 5

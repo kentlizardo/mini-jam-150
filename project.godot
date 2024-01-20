@@ -12,7 +12,7 @@ config_version=5
 
 config/name="MiniJam150Kent"
 run/main_scene="res://scenes/root.tscn"
-config/features=PackedStringArray("4.2", "Forward Plus")
+config/features=PackedStringArray("4.3", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
@@ -27,6 +27,7 @@ gdscript/warnings/untyped_declaration=2
 
 window/size/viewport_width=1280
 window/size/viewport_height=800
+window/stretch/mode="canvas_items"
 
 [importer_defaults]
 
