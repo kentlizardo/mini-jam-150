@@ -1,10 +1,11 @@
-[gd_scene load_steps=11 format=3 uid="uid://pqwhddnjm8an"]
+[gd_scene load_steps=12 format=3 uid="uid://pqwhddnjm8an"]
 
 [ext_resource type="Script" path="res://scenes/game/player.gd" id="1_igxis"]
 [ext_resource type="Animation" uid="uid://b6kka5rvvyjox" path="res://assets/anims/mace_attack.res" id="2_f8qnf"]
 [ext_resource type="Texture2D" uid="uid://c21cgddtoipdm" path="res://assets/textures/test_mace.png" id="2_mfetd"]
 [ext_resource type="Texture2D" uid="uid://dno8bsoldc848" path="res://assets/textures/test_light.png" id="3_3lhi1"]
 [ext_resource type="Animation" uid="uid://i5u7wt5ilutx" path="res://assets/anims/light_summon.res" id="3_6e8db"]
+[ext_resource type="Script" path="res://scenes/game/shake_weapon.gd" id="4_vesmt"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_nwppc"]
 
@@ -50,6 +51,7 @@ _data = {
 
 [node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("camera", "camera_forward", "mace_anim_player", "light_anim_player", "walk_pivot")]
 axis_lock_linear_y = true
+motion_mode = 1
 script = ExtResource("1_igxis")
 camera = NodePath("Camera3D")
 camera_forward = NodePath("Camera3D/Node3D")
@@ -82,6 +84,7 @@ libraries = {
 position = Vector2(160, 100)
 
 [node name="WalkPivot" type="Node2D" parent="Center"]
+script = ExtResource("4_vesmt")
 
 [node name="Mace" type="Sprite2D" parent="Center/WalkPivot"]
 texture = ExtResource("2_mfetd")
