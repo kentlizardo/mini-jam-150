@@ -1,9 +1,12 @@
-[gd_scene load_steps=4 format=3 uid="uid://b8xrsmnjhih1e"]
+[gd_scene load_steps=5 format=3 uid="uid://b8xrsmnjhih1e"]
 
 [ext_resource type="Script" path="res://scenes/game/light_projectile.gd" id="1_7bwmg"]
 [ext_resource type="Texture2D" uid="uid://hs1ak8761dgy" path="res://assets/textures/light.png" id="1_oy0pg"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_n4g6c"]
+radius = 0.4
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_hsuor"]
 
 [node name="Light" type="RigidBody3D"]
 axis_lock_linear_y = true
@@ -20,3 +23,11 @@ texture = ExtResource("1_oy0pg")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("SphereShape3D_n4g6c")
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("SphereShape3D_hsuor")
+
+[connection signal="area_entered" from="Area3D" to="." method="_on_area_3d_area_entered"]
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]

@@ -78,11 +78,11 @@ libraries = {
 }
 
 [node name="Mace" type="Sprite2D" parent="."]
-position = Vector2(100, 100)
+position = Vector2(160, 100)
 texture = ExtResource("2_mfetd")
 hframes = 4
 
 [node name="Light" type="Sprite2D" parent="."]
-position = Vector2(100, 100)
+position = Vector2(160, 100)
 texture = ExtResource("3_3lhi1")
 hframes = 5

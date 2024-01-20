@@ -2,7 +2,7 @@ class_name Player extends CharacterBody3D
 
 const SLASH_PROJECTILE_TEMPLATE = preload("res://scenes/game/slash_projectile.tscn")
 const LIGHT_PROJECTILE_TEMPLATE = preload("res://scenes/game/light_projectile.tscn")
-const SPEED = 5.0
+const SPEED = 10.0
 
 @export var camera : Camera3D
 @export var camera_forward : Node3D
@@ -74,11 +74,16 @@ func release_light() -> void:
 		charged = false
 		light_proj = LIGHT_PROJECTILE_TEMPLATE.instantiate() as LightProjectile
 		light_proj.global_position = camera_forward.global_position
+		light_proj.linear_velocity = get_real_velocity()
 		get_parent().add_child(light_proj)
 func start_recall() -> void:
 	light_proj.gravitate_towards = self
 func stop_recall() -> void:
 	light_proj.gravitate_towards = null
+func absorb_light(light: LightProjectile) -> void:
+	if light_proj == light and light.gravitate_towards == self:
+		light_proj = null
+		light.queue_free()
 
 func _attack() -> void:
 	var slash := SLASH_PROJECTILE_TEMPLATE.instantiate()
