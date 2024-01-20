@@ -7,8 +7,8 @@ const SPEED = 10.0
 @export var camera : Camera3D
 @export var camera_forward : Node3D
 
-@export var mace_anim_player : AnimationPlayer
-@export var light_anim_player : AnimationPlayer
+@export var mace_anim_player: AnimationPlayer
+@export var light_anim_player: AnimationPlayer
 @export var walk_pivot : Node2D
 
 func _init() -> void:
@@ -45,6 +45,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		var x_delta : float = event.relative.x
 		rotate_y(-x_delta * 0.01)
 	if Input.is_action_just_pressed("primary"):
+		print(mace_anim_player)
 		mace_anim_player.play("mace_attack")
 		get_viewport().set_input_as_handled()
 	if Input.is_action_just_pressed("secondary"):
