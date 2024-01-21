@@ -19,7 +19,7 @@ func _ready() -> void:
 	noise.seed = randi()
 	noise.fractal_octaves = 2
 
-const SHAKE_FRAME := 1.0 / 15
+const SHAKE_FRAME := 1.0 / 30
 var _shake_timer := 0.0
 func _process(delta: float) -> void:
 	if trauma:

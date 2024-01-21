@@ -50,7 +50,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		var x_delta : float = event.relative.x
 		rotate_y(-x_delta * 0.01)
 	if Input.is_action_just_pressed("primary"):
-		mace_anim_player.play("mace_attack")
+		start_combo()
 		get_viewport().set_input_as_handled()
 	if Input.is_action_just_pressed("secondary"):
 		if !is_instance_valid(light_proj):
@@ -92,10 +92,22 @@ func absorb_light(light: LightProjectile) -> void:
 		light_proj = null
 		light.queue_free()
 
+var combo := ""
+var combo_chain := {
+	"attack_1": "attack_2",
+	"attack_2": "attack_3",
+}
+func start_combo() -> void:
+	if mace_anim_player.is_playing():
+		if !combo.is_empty():
+			mace_anim_player.play(combo)
+	else:
+		combo = ""
+		mace_anim_player.play("attack_1")
 func _attack(damage: int) -> void:
-	print(able_to_slash)
 	var slashing : Node
 	var dist := -1
+	var attacked := false
 	for i in able_to_slash:
 		if !slashing:
 			slashing = i
@@ -108,18 +120,27 @@ func _attack(damage: int) -> void:
 	if !slashing:
 		return
 	if !slashing.is_in_group("player"):
-		print(slashing.has_method("damage"))
 		if slashing.has_method("damage"):
-			print("boom?")
 			slashing.damage(damage, Global.DamageType.PHYSICAL, self)
-			walk_pivot.add_trauma(50.0 * damage)
-			camera.add_trauma(25.0 * damage)
-			Game.current.short_pause(0.1 * damage)
+			attacked = true
+	if attacked:
+		walk_pivot.add_trauma(50.0 * damage)
+		camera.add_trauma(25.0 * damage)
+		Game.current.short_pause(0.1 * damage)
+		if combo_chain.has(mace_anim_player.current_animation):
+			combo = combo_chain[mace_anim_player.current_animation] as String
+			print("next current chain " + combo)
+		else:
+			combo = "attack_1"
+			print("next current chain " + combo)
 	#var slash := SLASH_PROJECTILE_TEMPLATE.instantiate()
 	#slash.sender = self
 	#add_child(slash)
 	#slash.global_position = camera.global_position
 	#slash.global_rotation = camera.global_rotation
+func _reset_combo() -> void:
+	combo = ""
+
 var charged := false
 func _charge() -> void:
 	charged = true

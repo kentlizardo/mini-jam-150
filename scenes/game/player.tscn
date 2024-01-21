@@ -1,19 +1,18 @@
-[gd_scene load_steps=14 format=3 uid="uid://pqwhddnjm8an"]
+[gd_scene load_steps=16 format=3 uid="uid://pqwhddnjm8an"]
 
 [ext_resource type="Script" path="res://scenes/game/player.gd" id="1_igxis"]
 [ext_resource type="Script" path="res://scenes/game/shake_camera.gd" id="2_0rjhe"]
 [ext_resource type="PackedScene" uid="uid://lbq5c8nv4jns" path="res://scenes/game/fake_light.tscn" id="2_6r2ux"]
-[ext_resource type="Animation" uid="uid://b6kka5rvvyjox" path="res://assets/anims/mace_attack.res" id="2_f8qnf"]
-[ext_resource type="Texture2D" uid="uid://c21cgddtoipdm" path="res://assets/textures/test_mace.png" id="2_mfetd"]
 [ext_resource type="Texture2D" uid="uid://dno8bsoldc848" path="res://assets/textures/test_light.png" id="3_3lhi1"]
 [ext_resource type="Animation" uid="uid://i5u7wt5ilutx" path="res://assets/anims/light_summon.res" id="3_6e8db"]
 [ext_resource type="Script" path="res://scenes/game/shake_weapon.gd" id="4_vesmt"]
+[ext_resource type="Texture2D" uid="uid://jdvtfcwwjaw1" path="res://assets/textures/mace_attack.png" id="7_asw1k"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_nwppc"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_0sx7l"]
 
-[sub_resource type="Animation" id="Animation_j73ok"]
+[sub_resource type="Animation" id="Animation_so1av"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -27,23 +26,102 @@ tracks/0/keys = {
 "update": 1,
 "values": [0]
 }
-tracks/1/type = "value"
+
+[sub_resource type="Animation" id="Animation_0xq1u"]
+resource_name = "attack_1"
+length = 0.8
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Center/WalkPivot/Mace:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.35, 0.55),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4]
+}
+tracks/1/type = "method"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Center/WalkPivot/Light:frame")
+tracks/1/path = NodePath(".")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0),
+"times": PackedFloat32Array(0.2),
 "transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [0]
+"values": [{
+"args": [1],
+"method": &"_attack"
+}]
 }
 
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_25ui1"]
+[sub_resource type="Animation" id="Animation_g11r4"]
+resource_name = "attack_2"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Center/WalkPivot/Mace:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.3, 0.4, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [5, 6, 7, 8, 9]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.3),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [1],
+"method": &"_attack"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_ywcvs"]
+resource_name = "attack_3"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Center/WalkPivot/Mace:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.7, 0.9, 1, 1.1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.5),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [2],
+"method": &"_attack"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_miojl"]
 _data = {
-"RESET": SubResource("Animation_j73ok"),
-"mace_attack": ExtResource("2_f8qnf")
+"RESET": SubResource("Animation_so1av"),
+"attack_1": SubResource("Animation_0xq1u"),
+"attack_2": SubResource("Animation_g11r4"),
+"attack_3": SubResource("Animation_ywcvs")
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_71aip"]
@@ -90,7 +168,7 @@ polygon = PackedVector2Array(0, 0, 0.3, 1, -0.3, 1)
 
 [node name="MacePlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_25ui1")
+"": SubResource("AnimationLibrary_miojl")
 }
 
 [node name="LightPlayer" type="AnimationPlayer" parent="."]
@@ -106,8 +184,9 @@ process_mode = 3
 script = ExtResource("4_vesmt")
 
 [node name="Mace" type="Sprite2D" parent="Center/WalkPivot"]
-texture = ExtResource("2_mfetd")
-hframes = 4
+texture = ExtResource("7_asw1k")
+hframes = 5
+vframes = 4
 
 [node name="Light" type="Sprite2D" parent="Center/WalkPivot"]
 texture = ExtResource("3_3lhi1")
