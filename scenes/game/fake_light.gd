@@ -15,8 +15,6 @@ var last_position : Vector3
 
 func _ready() -> void:
 	last_position = global_position
-	print("actually reeadied")
-	print(col)
 
 func _enter_tree() -> void:
 	LightHelper.add_light(self)

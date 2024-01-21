@@ -11,6 +11,8 @@ const SPEED = 5.0
 @export var light_anim_player: AnimationPlayer
 @export var walk_pivot : ShakeWeapon
 
+var able_to_slash : Array[Node3D] = []
+
 func _init() -> void:
 	add_to_group("player")
 
@@ -90,10 +92,52 @@ func absorb_light(light: LightProjectile) -> void:
 		light_proj = null
 		light.queue_free()
 
-func _attack() -> void:
-	var slash := SLASH_PROJECTILE_TEMPLATE.instantiate()
-	slash.sender = self
-	camera.add_child(slash)
+func _attack(damage: int) -> void:
+	print(able_to_slash)
+	var slashing : Node
+	var dist := -1
+	for i in able_to_slash:
+		if !slashing:
+			slashing = i
+			dist = i.global_position.distance_to(global_position)
+		else:
+			var compare_dist := i.global_position.distance_to(global_position)
+			if compare_dist < dist:
+				slashing = i
+				dist = compare_dist
+	if !slashing:
+		return
+	if !slashing.is_in_group("player"):
+		print(slashing.has_method("damage"))
+		if slashing.has_method("damage"):
+			print("boom?")
+			slashing.damage(damage, Global.DamageType.PHYSICAL, self)
+			walk_pivot.add_trauma(50.0 * damage)
+			camera.add_trauma(25.0 * damage)
+			Game.current.short_pause(0.1 * damage)
+	#var slash := SLASH_PROJECTILE_TEMPLATE.instantiate()
+	#slash.sender = self
+	#add_child(slash)
+	#slash.global_position = camera.global_position
+	#slash.global_rotation = camera.global_rotation
 var charged := false
 func _charge() -> void:
 	charged = true
+
+func slash_check(node: Node3D) -> void:
+	if node == self:
+		return
+	if !able_to_slash.has(node) and node.has_method("damage"):
+		able_to_slash.append(node)
+func remove_check(node: Node3D) -> void:
+	if able_to_slash.has(node):
+		able_to_slash.remove_at(able_to_slash.find(node))
+
+func _on_slash_area_3d_area_entered(area: Area3D) -> void:
+	slash_check(area)
+func _on_slash_area_3d_area_exited(area: Area3D) -> void:
+	remove_check(area)
+func _on_slash_area_3d_body_entered(body: Node3D) -> void:
+	slash_check(body)
+func _on_slash_area_3d_body_exited(body: Node3D) -> void:
+	remove_check(body)

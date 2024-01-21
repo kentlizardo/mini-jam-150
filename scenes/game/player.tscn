@@ -82,6 +82,12 @@ roll = NodePath(".")
 [node name="Node3D" type="Node3D" parent="Pitch/Camera3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
 
+[node name="Area3D" type="Area3D" parent="Pitch/Camera3D"]
+
+[node name="SlashArea" type="CollisionPolygon3D" parent="Pitch/Camera3D/Area3D"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0)
+polygon = PackedVector2Array(0, 0, 0.3, 1, -0.3, 1)
+
 [node name="MacePlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_25ui1")
@@ -106,3 +112,8 @@ hframes = 4
 [node name="Light" type="Sprite2D" parent="Center/WalkPivot"]
 texture = ExtResource("3_3lhi1")
 hframes = 5
+
+[connection signal="area_entered" from="Pitch/Camera3D/Area3D" to="." method="_on_slash_area_3d_area_entered"]
+[connection signal="area_exited" from="Pitch/Camera3D/Area3D" to="." method="_on_slash_area_3d_area_exited"]
+[connection signal="body_entered" from="Pitch/Camera3D/Area3D" to="." method="_on_slash_area_3d_body_entered"]
+[connection signal="body_exited" from="Pitch/Camera3D/Area3D" to="." method="_on_slash_area_3d_body_exited"]

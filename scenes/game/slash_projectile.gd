@@ -16,18 +16,19 @@ func _on_body_entered(body: Node3D) -> void:
 	hit_check(body)
 
 func hit_check(node: Node3D) -> void:
+	print(node.name)
 	if !node.is_in_group("player"):
 		if node.has_method("damage"):
 			node.damage(damage, Global.DamageType.PHYSICAL, sender)
-			self.call_deferred("free")
+			#self.queue_free()
 			if sender is Player:
 				(sender.walk_pivot as ShakeWeapon).add_trauma(50.0 * damage)
 				(sender.camera as ShakeCamera).add_trauma(25.0 * damage)
-				Game.current.short_pause()
+				Game.current.short_pause(0.1 * damage)
 
-func _ready() -> void:
-	kill()
-func kill() -> void:
-	await get_tree().create_timer(0.1).timeout
-	queue_free()
+#func _ready() -> void:
+	#kill()
+#func kill() -> void:
+	#await get_tree().create_timer(0.01).timeout
+	#queue_free()
 

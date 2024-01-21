@@ -40,11 +40,13 @@ size = Vector3(0.8, 2, 0.5)
 [sub_resource type="BoxShape3D" id="BoxShape3D_68qqw"]
 size = Vector3(1, 2, 0.38)
 
-[node name="Armor" type="CharacterBody3D"]
+[node name="Armor" type="CharacterBody3D" node_paths=PackedStringArray("pivot")]
 script = ExtResource("1_bs6vd")
+pivot = NodePath("")
 
 [node name="AnimatedSprite3D" type="AnimatedSprite3D" parent="."]
 pixel_size = 0.05
+billboard = 2
 texture_filter = 2
 sprite_frames = SubResource("SpriteFrames_q0mic")
 
@@ -67,3 +69,6 @@ script = ExtResource("2_gtdoo")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Front"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.221147)
 shape = SubResource("BoxShape3D_68qqw")
+
+[connection signal="die" from="Health" to="." method="queue_free"]
+[connection signal="damaged" from="HurtBox" to="Health" method="damage"]

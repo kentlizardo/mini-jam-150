@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://scenes/game/light_projectile.gd" id="1_x0w22"]
 [ext_resource type="Texture2D" uid="uid://hs1ak8761dgy" path="res://assets/textures/light.png" id="2_7tfc6"]
 [ext_resource type="Script" path="res://scenes/game/light_projectile_hitter.gd" id="3_fhpnw"]
-[ext_resource type="Script" path="res://scenes/game/fake_light.gd" id="4_shq81"]
+[ext_resource type="PackedScene" uid="uid://lbq5c8nv4jns" path="res://scenes/game/fake_light.tscn" id="4_wd4l8"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_xv42d"]
 radius = 0.4
@@ -15,6 +15,9 @@ axis_lock_linear_y = true
 linear_damp = 6.0
 script = ExtResource("1_x0w22")
 sprite = NodePath("Sprite3D")
+
+[node name="FakeLight" parent="." node_paths=PackedStringArray("col") instance=ExtResource("4_wd4l8")]
+col = NodePath("Area3D/CollisionShape3D")
 
 [node name="Node3D" type="CollisionShape3D" parent="."]
 shape = SubResource("SphereShape3D_xv42d")
@@ -31,9 +34,6 @@ light_proj = NodePath("..")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Hitter"]
 shape = SubResource("SphereShape3D_hlffu")
-
-[node name="FakeLight" type="Node3D" parent="."]
-script = ExtResource("4_shq81")
 
 [connection signal="area_entered" from="Hitter" to="Hitter" method="_on_area_3d_area_entered"]
 [connection signal="body_entered" from="Hitter" to="Hitter" method="_on_area_3d_body_entered"]
