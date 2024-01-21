@@ -21,8 +21,8 @@ func hit_check(node: Node3D) -> void:
 			node.damage(damage, Global.DamageType.PHYSICAL, sender)
 			self.call_deferred("free")
 			if sender is Player:
-				(sender.walk_pivot as ShakeWeapon).add_trauma(50.0)
-				(sender.camera as ShakeCamera).add_trauma(20.0)
+				(sender.walk_pivot as ShakeWeapon).add_trauma(50.0 * damage)
+				(sender.camera as ShakeCamera).add_trauma(25.0 * damage)
 				Game.current.short_pause()
 
 func _ready() -> void:

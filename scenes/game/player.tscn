@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" path="res://scenes/game/player.gd" id="1_igxis"]
 [ext_resource type="Script" path="res://scenes/game/shake_camera.gd" id="2_0rjhe"]
+[ext_resource type="PackedScene" uid="uid://lbq5c8nv4jns" path="res://scenes/game/fake_light.tscn" id="2_6r2ux"]
 [ext_resource type="Animation" uid="uid://b6kka5rvvyjox" path="res://assets/anims/mace_attack.res" id="2_f8qnf"]
-[ext_resource type="Script" path="res://scenes/game/fake_light.gd" id="2_faaiw"]
 [ext_resource type="Texture2D" uid="uid://c21cgddtoipdm" path="res://assets/textures/test_mace.png" id="2_mfetd"]
 [ext_resource type="Texture2D" uid="uid://dno8bsoldc848" path="res://assets/textures/test_light.png" id="3_3lhi1"]
 [ext_resource type="Animation" uid="uid://i5u7wt5ilutx" path="res://assets/anims/light_summon.res" id="3_6e8db"]
@@ -61,9 +61,9 @@ mace_anim_player = NodePath("MacePlayer")
 light_anim_player = NodePath("LightPlayer")
 walk_pivot = NodePath("Center/WalkPivot")
 
-[node name="FakeLight" type="Node3D" parent="."]
-script = ExtResource("2_faaiw")
+[node name="FakeLight" parent="." node_paths=PackedStringArray("col") instance=ExtResource("2_6r2ux")]
 radius = 2.5
+col = NodePath("Area3D/CollisionShape3D")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("CapsuleMesh_nwppc")

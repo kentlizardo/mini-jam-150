@@ -2,7 +2,7 @@ class_name Player extends CharacterBody3D
 
 const SLASH_PROJECTILE_TEMPLATE = preload("res://scenes/game/slash_projectile.tscn")
 const LIGHT_PROJECTILE_TEMPLATE = preload("res://scenes/game/light_projectile.tscn")
-const SPEED = 10.0
+const SPEED = 5.0
 
 @export var camera : ShakeCamera
 @export var camera_forward : Node3D

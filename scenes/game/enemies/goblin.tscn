@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://b6ljkcmx8fr4m"]
+[gd_scene load_steps=16 format=3 uid="uid://b6ljkcmx8fr4m"]
 
 [ext_resource type="Script" path="res://scenes/game/enemies/goblin.gd" id="1_7cc5t"]
 [ext_resource type="Texture2D" uid="uid://c7lwkob07yj2s" path="res://assets/textures/enemies.png" id="2_eplln"]
@@ -16,6 +16,10 @@
 atlas = ExtResource("2_eplln")
 region = Rect2(0, 32, 32, 32)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_u1gco"]
+atlas = ExtResource("2_eplln")
+region = Rect2(0, 64, 32, 32)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_somdp"]
 animations = [{
 "frames": [{
@@ -24,6 +28,14 @@ animations = [{
 }],
 "loop": true,
 "name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u1gco")
+}],
+"loop": true,
+"name": &"hidden",
 "speed": 5.0
 }]
 
@@ -41,7 +53,7 @@ sprite = NodePath("Sprite3D")
 shape = SubResource("CapsuleShape3D_6wuck")
 
 [node name="Sprite3D" type="AnimatedSprite3D" parent="."]
-pixel_size = 0.02
+pixel_size = 0.05
 billboard = 2
 texture_filter = 2
 sprite_frames = SubResource("SpriteFrames_somdp")

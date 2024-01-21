@@ -1,11 +1,36 @@
-[gd_scene load_steps=9 format=3 uid="uid://vqcrkykkf8cc"]
+[gd_scene load_steps=11 format=3 uid="uid://vqcrkykkf8cc"]
 
 [ext_resource type="Script" path="res://scenes/game/enemies/armor.gd" id="1_bs6vd"]
-[ext_resource type="Texture2D" uid="uid://d3lseaphwktsq" path="res://assets/textures/test_enemy.png" id="1_dif18"]
 [ext_resource type="Script" path="res://scenes/game/hurt_box.gd" id="2_gtdoo"]
 [ext_resource type="Script" path="res://scenes/game/components/health.gd" id="2_s5nq5"]
+[ext_resource type="Texture2D" uid="uid://c7lwkob07yj2s" path="res://assets/textures/enemies.png" id="2_uxn77"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6xkw6"]
+atlas = ExtResource("2_uxn77")
+region = Rect2(160, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_aw2g4"]
+atlas = ExtResource("2_uxn77")
+region = Rect2(160, 32, 32, 32)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_q0mic"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6xkw6")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_aw2g4")
+}],
+"loop": true,
+"name": &"vulnerable",
+"speed": 5.0
+}]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_c2exf"]
 
@@ -19,13 +44,9 @@ size = Vector3(1, 2, 0.38)
 script = ExtResource("1_bs6vd")
 
 [node name="AnimatedSprite3D" type="AnimatedSprite3D" parent="."]
-sprite_frames = SubResource("SpriteFrames_q0mic")
-
-[node name="Sprite3D" type="Sprite3D" parent="."]
-pixel_size = 0.02
-billboard = 2
+pixel_size = 0.05
 texture_filter = 2
-texture = ExtResource("1_dif18")
+sprite_frames = SubResource("SpriteFrames_q0mic")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_c2exf")

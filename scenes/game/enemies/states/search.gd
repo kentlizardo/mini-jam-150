@@ -3,7 +3,7 @@ extends State
 func _exit() -> void:
 	pass
 
-const SPEED = 2
+const SPEED = 1
 func _physics_process(delta: float) -> void:
 	var player := get_tree().get_first_node_in_group("player")
 	if player is Node3D:
