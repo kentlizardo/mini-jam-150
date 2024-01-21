@@ -50,14 +50,14 @@ func damage_check() -> void:
 	if health <= 0:
 		match lantern_state:
 			LanternState.LIT:
-				var light := PROJ_LIGHT.instantiate()
-				get_parent().add_child(light)
-				light.global_position = global_position
-				transmuted.emit(light)
+				var droplight := PROJ_LIGHT.instantiate()
+				get_parent().add_child(droplight)
+				droplight.global_position = global_position
+				transmuted.emit(droplight)
 			LanternState.BLUE:
-				var light := PROJ_BLUELIGHT.instantiate()
-				get_parent().add_child(light)
-				light.global_position = global_position
+				droplight := PROJ_BLUELIGHT.instantiate()
+				get_parent().add_child(droplight)
+				droplight.global_position = global_position
 		queue_free()
 
 func dispel_light() -> void:

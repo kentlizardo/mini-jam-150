@@ -13,8 +13,8 @@ func remove_light(light: FakeLight) -> bool:
 	var i := lights.find(light)
 	if i != -1:
 		lights.remove_at(i)
-		return true
 		dirty = true
+		return true
 	return false
 
 func set_dirty() -> void:
