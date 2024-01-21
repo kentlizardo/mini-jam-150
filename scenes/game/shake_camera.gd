@@ -15,11 +15,13 @@ var noise_val := 0
 var trauma := 0.0
 var trauma_power := 3
 
+static var current_cam : ShakeCamera
 func _ready() -> void:
 	randomize()
 	noise.noise_type = FastNoiseLite.TYPE_SIMPLEX
 	noise.seed = randi()
 	noise.fractal_octaves = 2
+	current_cam = self
 
 func _process(delta: float) -> void:
 	pitch.rotation = Vector3.ZERO

@@ -35,7 +35,7 @@ var light : FakeLight
 var health := 3
 
 func damage(damage: int, damage_type: Global.DamageType, sender: Node) -> void:
-	if Global.DamageType.MAGIC:
+	if damage_type == Global.DamageType.MAGIC:
 		if sender.is_in_group("player") and sender is LightProjectile:
 			lantern_state = LanternState.LIT
 			sender.transmuted.emit(self)
