@@ -96,6 +96,28 @@ func build() -> void:
 			for i in range(path["right"].y - path["left"].y):
 				var tile_pos := Vector2i(path["left"].x, path["left"].y + i)
 				set_tile(tile_pos, FLOOR)
+	var ladder_spawns := []
+	var player_spawns := []
+	for y in range(5):
+		for x in range(root_node.bounds.size.x):
+			var tile_pos := Vector2i(root_node.bounds.position.x + x, root_node.bounds.position.y + y)
+			if tiles.has(tile_pos):
+				if tiles[tile_pos] is TileFloor:
+					ladder_spawns.push_back(tile_pos)
+	for y in range(5):
+		for x in range(root_node.bounds.size.x):
+			var tile_pos := Vector2i(root_node.bounds.position.x + x, root_node.bounds.position.y + root_node.bounds.size.y - y)
+			if tiles.has(tile_pos):
+				if tiles[tile_pos] is TileFloor:
+					player_spawns.push_back(tile_pos)
+	await get_tree().process_frame
+	var p_spawn := player_spawns.pick_random() as Vector2i
+	var player := get_tree().get_first_node_in_group("player") as Player
+	player.position.x = p_spawn.x * 2
+	player.position.z = p_spawn.y * 2
+	player.position.y = 1
+	var l_spawn := ladder_spawns.pick_random() as Vector2i
+	add_entity(l_spawn, load("res://scenes/game/enemies/ladder.tscn"))
 
 # References:
 #https://jonoshields.com/post/bsp-dungeon

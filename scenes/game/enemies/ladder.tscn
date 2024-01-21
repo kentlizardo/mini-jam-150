@@ -1,0 +1,43 @@
+[gd_scene load_steps=7 format=3 uid="uid://btvnciki08eji"]
+
+[ext_resource type="Texture2D" uid="uid://c7lwkob07yj2s" path="res://assets/textures/enemies.png" id="1_7gvao"]
+[ext_resource type="Script" path="res://scenes/game/enemies/ladder.gd" id="1_t2bot"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lvnqx"]
+atlas = ExtResource("1_7gvao")
+region = Rect2(128, 32, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_cghk2"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lvnqx")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_61aml"]
+radius = 1.0
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_kt48w"]
+
+[node name="Ladder" type="Node3D"]
+script = ExtResource("1_t2bot")
+
+[node name="AnimatedSprite3D" type="AnimatedSprite3D" parent="."]
+pixel_size = 0.05
+billboard = 2
+texture_filter = 2
+sprite_frames = SubResource("SpriteFrames_cghk2")
+
+[node name="Area3D" type="Area3D" parent="AnimatedSprite3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="AnimatedSprite3D/Area3D"]
+shape = SubResource("CylinderShape3D_61aml")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="AnimatedSprite3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="AnimatedSprite3D/StaticBody3D"]
+shape = SubResource("CylinderShape3D_kt48w")
