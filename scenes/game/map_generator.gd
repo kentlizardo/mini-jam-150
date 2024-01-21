@@ -1,6 +1,11 @@
 extends Control
 
 const INITIAL_ROOM_SIZE := Rect2i(-24, -80, 48, 160)
+const MONSTERS_PER_ROOM := Vector2i(1, 2)
+var MONSTER_TABLE := [
+	load("res://scenes/game/enemies/goblin.tscn"),
+	load("res://scenes/game/enemies/armor.tscn"),
+]
 
 const tile_size := 1
 
@@ -47,6 +52,13 @@ func set_tile(tile_pos: Vector2i, scene: PackedScene) -> void:
 	tile.position.z = tile_pos.y * 2
 	tiles[tile_pos] = tile
 
+func add_entity(tile_pos: Vector2i, scene: PackedScene) -> void:
+	var ent := scene.instantiate() as Node3D
+	map_root.add_child(ent)
+	ent.position.x = tile_pos.x * 2
+	ent.position.z = tile_pos.y * 2
+	ent.position.y = 1
+
 func set_player_floor(pos: Vector2i) -> void:
 	player_marker = pos
 	queue_redraw()
@@ -60,6 +72,7 @@ func build() -> void:
 			rng.randi_range(MIN_PADDING,MAX_PADDING),
 			rng.randi_range(MIN_PADDING,MAX_PADDING),
 		)
+		var unoccupied: Array[Vector2i] = []
 		for y in range(leaf.bounds.size.y):
 			for x in range(leaf.bounds.size.x):
 				var tile_pos := leaf.bounds.position + Vector2i(x,y)
@@ -67,6 +80,12 @@ func build() -> void:
 					set_tile(tile_pos, WALL)
 				else:
 					set_tile(tile_pos, FLOOR)
+					unoccupied.append(tile_pos)
+		for i in range(0, randi_range(MONSTERS_PER_ROOM.x, MONSTERS_PER_ROOM.y)):
+			if unoccupied.size() > 0:
+				var space := unoccupied.pick_random() as Vector2i
+				add_entity(space, MONSTER_TABLE.pick_random())
+				unoccupied.remove_at(unoccupied.find(space))
 	for path: Dictionary in paths:
 		if path["left"].y == path["right"].y:
 			for i in range(path["right"].x - path["left"].x):

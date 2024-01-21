@@ -8,7 +8,7 @@ owner_groups = Array[String](["player"])
 
 [node name="Col" type="CollisionPolygon3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0)
-polygon = PackedVector2Array(0, 0, 0.5, 1.5, -0.5, 1.5)
+polygon = PackedVector2Array(0, 0, 0.5, 1, -0.5, 1)
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

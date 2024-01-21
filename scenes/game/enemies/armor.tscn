@@ -1,9 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://vqcrkykkf8cc"]
+[gd_scene load_steps=9 format=3 uid="uid://vqcrkykkf8cc"]
 
 [ext_resource type="Script" path="res://scenes/game/enemies/armor.gd" id="1_bs6vd"]
 [ext_resource type="Texture2D" uid="uid://d3lseaphwktsq" path="res://assets/textures/test_enemy.png" id="1_dif18"]
 [ext_resource type="Script" path="res://scenes/game/hurt_box.gd" id="2_gtdoo"]
 [ext_resource type="Script" path="res://scenes/game/components/health.gd" id="2_s5nq5"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_q0mic"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_c2exf"]
 
@@ -15,6 +17,9 @@ size = Vector3(1, 2, 0.38)
 
 [node name="Armor" type="CharacterBody3D"]
 script = ExtResource("1_bs6vd")
+
+[node name="AnimatedSprite3D" type="AnimatedSprite3D" parent="."]
+sprite_frames = SubResource("SpriteFrames_q0mic")
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
 pixel_size = 0.02

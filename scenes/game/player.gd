@@ -49,7 +49,6 @@ func _unhandled_input(event: InputEvent) -> void:
 		var x_delta : float = event.relative.x
 		rotate_y(-x_delta * 0.01)
 	if Input.is_action_just_pressed("primary"):
-		print(mace_anim_player)
 		mace_anim_player.play("mace_attack")
 		get_viewport().set_input_as_handled()
 	if Input.is_action_just_pressed("secondary"):
