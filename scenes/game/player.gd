@@ -1,7 +1,7 @@
 class_name Player extends CharacterBody3D
 
-const SLASH_PROJECTILE_TEMPLATE = preload("res://scenes/game/slash_projectile.tscn")
-const LIGHT_PROJECTILE_TEMPLATE = preload("res://scenes/game/light_projectile.tscn")
+static var SLASH_PROJECTILE_TEMPLATE := load("res://scenes/game/slash_projectile.tscn") as PackedScene
+static var LIGHT_PROJECTILE_TEMPLATE := load("res://scenes/game/light_projectile.tscn") as PackedScene
 const SPEED = 5.0
 
 @export var camera : ShakeCamera
@@ -64,6 +64,10 @@ func _unhandled_input(event: InputEvent) -> void:
 		else:
 			stop_recall()
 		get_viewport().set_input_as_handled()
+	if Input.is_action_just_pressed("dispel"):
+		if is_instance_valid(light_proj):
+			dispel_light()
+		get_viewport().set_input_as_handled()
 
 func _capture_mouse() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
@@ -71,7 +75,18 @@ func _capture_mouse() -> void:
 func _uncapture_mouse() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
-var light_proj : LightProjectile
+var light_proj : Node3D:
+	set(x):
+		if is_instance_valid(light_proj):
+			if light_proj.has_signal("transmuted"):
+				light_proj.transmuted.disconnect(_on_transmute)
+		light_proj = x
+		if is_instance_valid(light_proj):
+			if light_proj.has_signal("transmuted"):
+				light_proj.transmuted.connect(_on_transmute)
+func _on_transmute(next_light: Node3D) -> void:
+	light_proj = next_light
+
 func start_light() -> void:
 	light_anim_player.stop()
 	light_anim_player.play("light_summon")
@@ -80,17 +95,27 @@ func release_light() -> void:
 	if charged:
 		charged = false
 		light_proj = LIGHT_PROJECTILE_TEMPLATE.instantiate() as LightProjectile
+		light_proj.add_to_group("player")
 		get_parent().add_child(light_proj)
 		light_proj.global_position = camera_forward.global_position
 		light_proj.linear_velocity = get_real_velocity()
 func start_recall() -> void:
-	light_proj.gravitate_towards = self
+	if light_proj is LightProjectile:
+		light_proj.gravitate_towards = self
 func stop_recall() -> void:
-	light_proj.gravitate_towards = null
+	if light_proj is LightProjectile:
+		light_proj.gravitate_towards = null
 func absorb_light(light: LightProjectile) -> void:
 	if light_proj == light and light.gravitate_towards == self:
 		light_proj = null
 		light.queue_free()
+func dispel_light() -> void:
+	if is_instance_valid(light_proj):
+		if light_proj.has_method("dispel_light"):
+			light_proj.dispel_light()
+		else:
+			push_error("Should not have a light_proj that cannot dispel light.")
+		light_proj = null
 
 var combo := ""
 var combo_chain := {
@@ -119,7 +144,7 @@ func _attack(damage: int) -> void:
 				dist = compare_dist
 	if !slashing:
 		return
-	if !slashing.is_in_group("player"):
+	if slashing != self:
 		if slashing.has_method("damage"):
 			slashing.damage(damage, Global.DamageType.PHYSICAL, self)
 			attacked = true

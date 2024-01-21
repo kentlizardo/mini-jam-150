@@ -140,7 +140,7 @@ light_anim_player = NodePath("LightPlayer")
 walk_pivot = NodePath("Center/WalkPivot")
 
 [node name="FakeLight" parent="." node_paths=PackedStringArray("col") instance=ExtResource("2_6r2ux")]
-radius = 2.5
+radius = 2.4
 col = NodePath("Area3D/CollisionShape3D")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]

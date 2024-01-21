@@ -1,0 +1,46 @@
+[gd_scene load_steps=8 format=3 uid="uid://dbjjenpf11nc"]
+
+[ext_resource type="Script" path="res://scenes/game/light_projectile.gd" id="1_kksyh"]
+[ext_resource type="PackedScene" uid="uid://lbq5c8nv4jns" path="res://scenes/game/fake_light.tscn" id="2_1yiuc"]
+[ext_resource type="Texture2D" uid="uid://el0fcrpo8qda" path="res://assets/textures/light_blue.png" id="3_8dhkm"]
+[ext_resource type="Script" path="res://scenes/game/light_projectile_hitter.gd" id="4_3qxlj"]
+[ext_resource type="Texture2D" uid="uid://cl8f8cctcbidj" path="res://assets/textures/light_blue_fast.png" id="4_4d6yo"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_xv42d"]
+radius = 0.4
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_hlffu"]
+
+[node name="Node3D" type="RigidBody3D"]
+axis_lock_linear_y = true
+linear_damp = 6.0
+script = ExtResource("1_kksyh")
+
+[node name="FakeLight" parent="." node_paths=PackedStringArray("col") instance=ExtResource("2_1yiuc")]
+col = NodePath("Area3D/CollisionShape3D")
+
+[node name="Node3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_xv42d")
+
+[node name="Normal" type="Sprite3D" parent="."]
+pixel_size = 0.02
+billboard = 2
+texture_filter = 2
+texture = ExtResource("3_8dhkm")
+
+[node name="Fast" type="Sprite3D" parent="."]
+visible = false
+pixel_size = 0.02
+billboard = 2
+texture_filter = 2
+texture = ExtResource("4_4d6yo")
+
+[node name="Hitter" type="Area3D" parent="." node_paths=PackedStringArray("light_proj")]
+script = ExtResource("4_3qxlj")
+light_proj = NodePath("..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Hitter"]
+shape = SubResource("SphereShape3D_hlffu")
+
+[connection signal="area_entered" from="Hitter" to="Hitter" method="_on_area_3d_area_entered"]
+[connection signal="body_entered" from="Hitter" to="Hitter" method="_on_area_3d_body_entered"]

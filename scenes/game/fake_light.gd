@@ -2,12 +2,12 @@ class_name FakeLight extends Node3D
 
 @export var radius := 5.0:
 	set(x):
+		radius = x
 		if !is_node_ready():
 			await ready
-		if col:
-			var shape := SphereShape3D.new()
-			shape.radius = x
-			col.shape = shape
+		var shape := SphereShape3D.new()
+		shape.radius = x
+		col.shape = shape
 
 @export var col : CollisionShape3D
 

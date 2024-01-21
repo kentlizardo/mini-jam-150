@@ -5,6 +5,7 @@ const MONSTERS_PER_ROOM := Vector2i(1, 2)
 var MONSTER_TABLE := [
 	load("res://scenes/game/enemies/goblin.tscn"),
 	load("res://scenes/game/enemies/armor.tscn"),
+	load("res://scenes/game/enemies/lantern.tscn"),
 ]
 
 const tile_size := 1
@@ -18,7 +19,7 @@ var player_marker := Vector2.ZERO
 
 func _ready() -> void:
 	root_node = BSP_Node.new(INITIAL_ROOM_SIZE)
-	root_node.split(4, paths)
+	root_node.split(5, paths)
 	queue_redraw()
 	build()
 

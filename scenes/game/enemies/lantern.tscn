@@ -1,0 +1,60 @@
+[gd_scene load_steps=8 format=3 uid="uid://b1nmbnyxts2ny"]
+
+[ext_resource type="Script" path="res://scenes/game/enemies/lantern.gd" id="1_mmcxy"]
+[ext_resource type="Texture2D" uid="uid://c7lwkob07yj2s" path="res://assets/textures/enemies.png" id="1_ycvmq"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ri8b4"]
+atlas = ExtResource("1_ycvmq")
+region = Rect2(96, 64, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ptsm1"]
+atlas = ExtResource("1_ycvmq")
+region = Rect2(96, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r4cwg"]
+atlas = ExtResource("1_ycvmq")
+region = Rect2(96, 96, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_5lj66"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ri8b4")
+}],
+"loop": true,
+"name": &"blue",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ptsm1")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r4cwg")
+}],
+"loop": true,
+"name": &"lit",
+"speed": 5.0
+}]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_hmtps"]
+radius = 0.4
+
+[node name="Lantern" type="StaticBody3D" node_paths=PackedStringArray("sprite")]
+script = ExtResource("1_mmcxy")
+sprite = NodePath("AnimatedSprite3D")
+
+[node name="AnimatedSprite3D" type="AnimatedSprite3D" parent="."]
+pixel_size = 0.05
+billboard = 2
+texture_filter = 2
+sprite_frames = SubResource("SpriteFrames_5lj66")
+animation = &"blue"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CylinderShape3D_hmtps")

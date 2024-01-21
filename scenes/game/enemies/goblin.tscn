@@ -60,7 +60,6 @@ sprite_frames = SubResource("SpriteFrames_somdp")
 
 [node name="Health" type="Node" parent="."]
 script = ExtResource("3_t6ayx")
-health = 3
 
 [node name="HurtBox" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)

@@ -11,9 +11,9 @@ func _on_area_3d_body_entered(body: Node3D) -> void:
 func _hit_check(node: Node3D) -> void:
 	if node == self or node is LightProjectile:
 		return
-	if !node.is_in_group("player"):
+	if !(node is Player):
 		if node.has_method("damage"):
-			node.damage(2, Global.DamageType.MAGIC, self)
+			node.damage(1, Global.DamageType.MAGIC, light_proj)
 	if node == light_proj.gravitate_towards:
 		if node is Player:
 			node.absorb_light(light_proj)
