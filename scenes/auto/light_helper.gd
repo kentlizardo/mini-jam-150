@@ -7,12 +7,14 @@ var lights : Array[FakeLight] = []
 
 func add_light(light: FakeLight) -> void:
 	lights.push_back(light)
+	dirty = true
 
 func remove_light(light: FakeLight) -> bool:
 	var i := lights.find(light)
 	if i != -1:
 		lights.remove_at(i)
 		return true
+		dirty = true
 	return false
 
 func set_dirty() -> void:
