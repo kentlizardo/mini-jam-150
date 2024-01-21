@@ -19,9 +19,10 @@ func hit_check(node: Node3D) -> void:
 	if !node.is_in_group("player"):
 		if node.has_method("damage"):
 			node.damage(damage, Global.DamageType.PHYSICAL, sender)
-			queue_free()
+			self.call_deferred("free")
 			if sender is Player:
 				(sender.walk_pivot as ShakeWeapon).add_trauma(30.0)
+				Game.current.short_pause()
 
 func _ready() -> void:
 	kill()

@@ -1,6 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://dxus8oa1fjdgb"]
+[gd_scene load_steps=7 format=3 uid="uid://dxus8oa1fjdgb"]
 
 [ext_resource type="Script" path="res://scenes/root.gd" id="1_4jgp6"]
+[ext_resource type="Script" path="res://scenes/game/game.gd" id="2_hv5sa"]
 [ext_resource type="StyleBox" uid="uid://b6h87wscwvmhn" path="res://res/ui_box.tres" id="2_ylsjo"]
 [ext_resource type="PackedScene" uid="uid://b6ljkcmx8fr4m" path="res://scenes/game/enemies/goblin.tscn" id="3_ernnx"]
 [ext_resource type="PackedScene" uid="uid://pqwhddnjm8an" path="res://scenes/game/player.tscn" id="5_kxbvh"]
@@ -10,10 +11,7 @@
 process_mode = 3
 script = ExtResource("1_4jgp6")
 
-[node name="Game" type="Node" parent="."]
-process_mode = 1
-
-[node name="SubViewportContainer" type="SubViewportContainer" parent="Game"]
+[node name="SubViewportContainer" type="SubViewportContainer" parent="."]
 texture_filter = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -23,13 +21,13 @@ grow_vertical = 2
 stretch = true
 stretch_shrink = 4
 
-[node name="SubViewport" type="SubViewport" parent="Game/SubViewportContainer"]
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
 handle_input_locally = false
 canvas_item_default_texture_filter = 0
 size = Vector2i(320, 200)
 render_target_update_mode = 4
 
-[node name="LeftPanel" type="Panel" parent="Game/SubViewportContainer/SubViewport"]
+[node name="LeftPanel" type="Panel" parent="SubViewportContainer/SubViewport"]
 custom_minimum_size = Vector2(60, 200)
 anchors_preset = 4
 anchor_top = 0.5
@@ -40,7 +38,7 @@ offset_bottom = 100.0
 grow_vertical = 2
 theme_override_styles/panel = ExtResource("2_ylsjo")
 
-[node name="LeftPanel2" type="Panel" parent="Game/SubViewportContainer/SubViewport"]
+[node name="LeftPanel2" type="Panel" parent="SubViewportContainer/SubViewport"]
 custom_minimum_size = Vector2(60, 200)
 anchors_preset = 6
 anchor_left = 1.0
@@ -54,7 +52,7 @@ grow_horizontal = 0
 grow_vertical = 2
 theme_override_styles/panel = ExtResource("2_ylsjo")
 
-[node name="Control" type="Control" parent="Game/SubViewportContainer/SubViewport/LeftPanel2" node_paths=PackedStringArray("map_root")]
+[node name="Control" type="Control" parent="SubViewportContainer/SubViewport/LeftPanel2" node_paths=PackedStringArray("map_root")]
 custom_minimum_size = Vector2(24, 80)
 layout_mode = 1
 anchors_preset = 15
@@ -64,11 +62,15 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("6_8sy5e")
-map_root = NodePath("../../MapRoot")
+map_root = NodePath("../../Game/MapRoot")
 
-[node name="MapRoot" type="Node3D" parent="Game/SubViewportContainer/SubViewport"]
+[node name="Game" type="Node" parent="SubViewportContainer/SubViewport"]
+process_mode = 1
+script = ExtResource("2_hv5sa")
 
-[node name="Player" parent="Game/SubViewportContainer/SubViewport" node_paths=PackedStringArray("camera", "camera_forward", "mace_anim_player", "light_anim_player", "walk_pivot") instance=ExtResource("5_kxbvh")]
+[node name="MapRoot" type="Node3D" parent="SubViewportContainer/SubViewport/Game"]
+
+[node name="Player" parent="SubViewportContainer/SubViewport/Game" node_paths=PackedStringArray("camera", "camera_forward", "mace_anim_player", "light_anim_player", "walk_pivot") instance=ExtResource("5_kxbvh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 camera = NodePath("Pitch/Camera3D")
 camera_forward = NodePath("Pitch/Camera3D/Node3D")
@@ -76,9 +78,9 @@ mace_anim_player = NodePath("MacePlayer")
 light_anim_player = NodePath("LightPlayer")
 walk_pivot = NodePath("Center/WalkPivot")
 
-[node name="Goblin" parent="Game/SubViewportContainer/SubViewport" node_paths=PackedStringArray("sprite") instance=ExtResource("3_ernnx")]
+[node name="Goblin" parent="SubViewportContainer/SubViewport/Game" node_paths=PackedStringArray("sprite") instance=ExtResource("3_ernnx")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 1, -5)
 sprite = NodePath("Sprite3D")
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Game/SubViewportContainer/SubViewport"]
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="SubViewportContainer/SubViewport/Game"]
 transform = Transform3D(0.258819, -0.683013, 0.683013, 0, 0.707107, 0.707107, -0.965926, -0.183013, 0.183013, 0, 3, 0)

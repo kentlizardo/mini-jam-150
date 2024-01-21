@@ -1,15 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://bgagh6h3x8hvm"]
+[gd_scene load_steps=6 format=3 uid="uid://bgagh6h3x8hvm"]
 
 [ext_resource type="Script" path="res://scenes/game/map/tile_floor.gd" id="1_jytn1"]
 [ext_resource type="ArrayMesh" uid="uid://cxccan8lf6bxq" path="res://assets/models/floor.obj" id="1_odx6k"]
-[ext_resource type="Texture2D" uid="uid://bu7nul7bbn5nk" path="res://assets/textures/tiles.png" id="2_a2co5"]
+[ext_resource type="Material" uid="uid://dkqm0hh7ibyol" path="res://res/terrain_shader.tres" id="3_dj637"]
 
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_4ex7k"]
 data = PackedVector3Array(1, 0, 1, -1, 0, 1, 1, 0, -1, -1, 0, 1, -1, 0, -1, 1, 0, -1)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pj0d4"]
-albedo_texture = ExtResource("2_a2co5")
-texture_filter = 2
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ikmib"]
 size = Vector3(2, 2, 2)
@@ -26,7 +22,7 @@ shape = SubResource("ConcavePolygonShape3D_4ex7k")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, -3, 0, -3)
 mesh = ExtResource("1_odx6k")
-surface_material_override/0 = SubResource("StandardMaterial3D_pj0d4")
+surface_material_override/0 = ExtResource("3_dj637")
 
 [node name="Area3D" type="Area3D" parent="."]
 monitorable = false

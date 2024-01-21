@@ -63,6 +63,7 @@ walk_pivot = NodePath("Center/WalkPivot")
 
 [node name="FakeLight" type="Node3D" parent="."]
 script = ExtResource("2_faaiw")
+radius = 2.5
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("CapsuleMesh_nwppc")
@@ -94,6 +95,7 @@ libraries = {
 position = Vector2(160, 100)
 
 [node name="WalkPivot" type="Node2D" parent="Center"]
+process_mode = 3
 script = ExtResource("4_vesmt")
 
 [node name="Mace" type="Sprite2D" parent="Center/WalkPivot"]

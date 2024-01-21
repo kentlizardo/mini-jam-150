@@ -4,7 +4,7 @@ class_name ShakeWeapon extends Node2D
 # https://kidscancode.org/godot_recipes/3.x/2d/screen_shake/index.html
 # https://www.youtube.com/watch?v=tu-Qe66AvtY
 
-const DECAY := 0.8
+const DECAY := 0.6
 const MAX_OFFSET := Vector2(50, 50)
 const MAX_ROLL = 0.4
 

@@ -1,6 +1,6 @@
 class_name FakeLight extends Node3D
 
-@export var radius := 5
+@export var radius := 5.0
 var last_position : Vector3
 
 func _ready() -> void:

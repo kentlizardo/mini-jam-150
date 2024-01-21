@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://0vkvf4usabme"]
+[gd_scene load_steps=7 format=3 uid="uid://0vkvf4usabme"]
 
 [ext_resource type="Script" path="res://scenes/game/light_projectile.gd" id="1_x0w22"]
 [ext_resource type="Texture2D" uid="uid://hs1ak8761dgy" path="res://assets/textures/light.png" id="2_7tfc6"]
 [ext_resource type="Script" path="res://scenes/game/light_projectile_hitter.gd" id="3_fhpnw"]
+[ext_resource type="Script" path="res://scenes/game/fake_light.gd" id="4_shq81"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_xv42d"]
 radius = 0.4
@@ -30,6 +31,9 @@ light_proj = NodePath("..")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Hitter"]
 shape = SubResource("SphereShape3D_hlffu")
+
+[node name="FakeLight" type="Node3D" parent="."]
+script = ExtResource("4_shq81")
 
 [connection signal="area_entered" from="Hitter" to="Hitter" method="_on_area_3d_area_entered"]
 [connection signal="body_entered" from="Hitter" to="Hitter" method="_on_area_3d_body_entered"]

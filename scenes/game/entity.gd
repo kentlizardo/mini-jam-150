@@ -1,3 +1,3 @@
 class_name Entity extends Node
 
-@export var sprite : Sprite3D
+@export var sprite : AnimatedSprite3D

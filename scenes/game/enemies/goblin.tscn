@@ -1,7 +1,7 @@
-[gd_scene load_steps=13 format=3 uid="uid://b6ljkcmx8fr4m"]
+[gd_scene load_steps=15 format=3 uid="uid://b6ljkcmx8fr4m"]
 
 [ext_resource type="Script" path="res://scenes/game/enemies/goblin.gd" id="1_7cc5t"]
-[ext_resource type="Texture2D" uid="uid://d3lseaphwktsq" path="res://assets/textures/test_enemy.png" id="2_wled4"]
+[ext_resource type="Texture2D" uid="uid://c7lwkob07yj2s" path="res://assets/textures/enemies.png" id="2_eplln"]
 [ext_resource type="Script" path="res://scenes/game/hurt_box.gd" id="3_6uyd6"]
 [ext_resource type="Script" path="res://scenes/game/components/vision.gd" id="3_nicwl"]
 [ext_resource type="Script" path="res://scenes/game/components/health.gd" id="3_t6ayx"]
@@ -11,6 +11,21 @@
 [ext_resource type="Script" path="res://scenes/game/enemies/states/dying.gd" id="8_xp0lr"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_6wuck"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gh0ad"]
+atlas = ExtResource("2_eplln")
+region = Rect2(0, 32, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_somdp"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gh0ad")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ea3db"]
 radius = 1.0
@@ -25,11 +40,11 @@ sprite = NodePath("Sprite3D")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_6wuck")
 
-[node name="Sprite3D" type="Sprite3D" parent="."]
+[node name="Sprite3D" type="AnimatedSprite3D" parent="."]
 pixel_size = 0.02
 billboard = 2
 texture_filter = 2
-texture = ExtResource("2_wled4")
+sprite_frames = SubResource("SpriteFrames_somdp")
 
 [node name="Health" type="Node" parent="."]
 script = ExtResource("3_t6ayx")
