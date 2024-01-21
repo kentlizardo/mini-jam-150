@@ -18,6 +18,7 @@ config/icon="res://icon.svg"
 [autoload]
 
 Global="*res://scenes/auto/global.gd"
+LightHelper="*res://scenes/auto/light_helper.gd"
 
 [debug]
 
@@ -77,3 +78,10 @@ secondary={
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
+
+[shader_globals]
+
+light_count={
+"type": "uint",
+"value": 0
+}
