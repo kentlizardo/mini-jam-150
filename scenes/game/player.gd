@@ -11,6 +11,11 @@ const SPEED = 5.0
 @export var light_anim_player: AnimationPlayer
 @export var walk_pivot : ShakeWeapon
 
+@export var mace_sounds : Array[AudioStreamPlayer3D]
+@export var gore_sounds : Array[AudioStreamPlayer3D]
+@export var dispel_sound : AudioStreamPlayer3D
+@export var recall_sound : AudioStreamPlayer3D
+
 var able_to_slash : Array[Node3D] = []
 var health : int:
 	set(x):
@@ -27,6 +32,7 @@ func _ready() -> void:
 	_capture_mouse()
 
 func damage(damage: int, damage_type: Global.DamageType, source: Node) -> void:
+	gore_sounds.pick_random().play()
 	camera.add_trauma(35.0)
 	health -= 1
 	if health <= 0:
@@ -137,12 +143,14 @@ func start_recall() -> void:
 		light_proj.recall()
 	if light_proj is LightProjectile:
 		light_proj.gravitate_towards = self
+	recall_sound.play()
 func stop_recall() -> void:
 	if light_proj is LightProjectile:
 		light_proj.gravitate_towards = null
 func absorb_light(light: LightProjectile) -> void:
 	if light_proj == light and light.gravitate_towards == self:
 		light_proj = null
+		personal_light = true
 func dispel_light() -> void:
 	if is_instance_valid(light_proj):
 		if light_proj.has_method("dispel_light"):
@@ -150,6 +158,7 @@ func dispel_light() -> void:
 		else:
 			push_error("Should not have a light_proj that cannot dispel light.")
 		light_proj = null
+	dispel_sound.play()
 
 var combo := ""
 var combo_chain := {
@@ -193,6 +202,7 @@ func _attack(damage: int) -> void:
 	if attacked:
 		walk_pivot.add_trauma(50.0 * damage)
 		camera.add_trauma(25.0 * damage)
+		mace_sounds.pick_random().play()
 		Game.current.short_pause(0.1 * damage)
 		if combo_chain.has(mace_anim_player.current_animation):
 			combo = combo_chain[mace_anim_player.current_animation] as String

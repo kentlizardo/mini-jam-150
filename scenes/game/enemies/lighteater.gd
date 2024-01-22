@@ -22,6 +22,8 @@ var health := 2
 var ammo := 0
 const ABSORB_LENGTH := 1.0
 
+@export var shoot_sound: AudioStreamPlayer3D
+
 var state : BirdState = BirdState.SEARCH:
 	set(x):
 		state = x
@@ -98,6 +100,7 @@ func _process(delta: float) -> void:
 		drive_vector = Vector3.ZERO
 
 func shoot() -> void:
+	shoot_sound.play()
 	var target : Node3D
 	for i in vision.seen:
 		if i is Player:

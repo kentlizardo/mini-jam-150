@@ -25,6 +25,8 @@ stretch_shrink = 4
 [node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
 handle_input_locally = false
 canvas_item_default_texture_filter = 0
+audio_listener_enable_2d = true
+audio_listener_enable_3d = true
 size = Vector2i(320, 180)
 render_target_update_mode = 4
 
@@ -77,16 +79,19 @@ script = ExtResource("2_hv5sa")
 
 [node name="MapRoot" type="Node3D" parent="SubViewportContainer/SubViewport/Game"]
 
-[node name="Player" parent="SubViewportContainer/SubViewport/Game" node_paths=PackedStringArray("camera", "camera_forward", "mace_anim_player", "light_anim_player", "walk_pivot", "personal_light_sprite", "fake_light") instance=ExtResource("5_kxbvh")]
+[node name="Player" parent="SubViewportContainer/SubViewport/Game" node_paths=PackedStringArray("camera", "camera_forward", "mace_anim_player", "light_anim_player", "walk_pivot", "mace_sound", "personal_light_sprite", "fake_light") instance=ExtResource("5_kxbvh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 camera = NodePath("Pitch/Camera3D")
 camera_forward = NodePath("Pitch/Camera3D/Node3D")
 mace_anim_player = NodePath("MacePlayer")
 light_anim_player = NodePath("LightPlayer")
 walk_pivot = NodePath("Center/WalkPivot")
+mace_sound = NodePath("Pitch/Camera3D/Mace1")
 personal_light_sprite = NodePath("Center/WalkPivot/Personalight")
 fake_light = NodePath("FakeLight")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="SubViewportContainer/SubViewport/Game"]
 transform = Transform3D(0.258819, -0.683013, 0.683013, 0, 0.707107, 0.707107, -0.965926, -0.183013, 0.183013, 0, 3, 0)
 visible = false
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]

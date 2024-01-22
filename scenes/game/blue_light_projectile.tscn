@@ -1,10 +1,14 @@
-[gd_scene load_steps=8 format=3 uid="uid://dbjjenpf11nc"]
+[gd_scene load_steps=12 format=3 uid="uid://dbjjenpf11nc"]
 
 [ext_resource type="Script" path="res://scenes/game/light_projectile.gd" id="1_kksyh"]
 [ext_resource type="PackedScene" uid="uid://lbq5c8nv4jns" path="res://scenes/game/fake_light.tscn" id="2_1yiuc"]
 [ext_resource type="Texture2D" uid="uid://el0fcrpo8qda" path="res://assets/textures/light_blue.png" id="3_8dhkm"]
 [ext_resource type="Script" path="res://scenes/game/light_projectile_hitter.gd" id="4_3qxlj"]
 [ext_resource type="Texture2D" uid="uid://cl8f8cctcbidj" path="res://assets/textures/light_blue_fast.png" id="4_4d6yo"]
+[ext_resource type="AudioStream" uid="uid://b2bnm151yvds0" path="res://assets/audio/rend-1.mp3" id="6_04nh1"]
+[ext_resource type="AudioStream" uid="uid://bcwjkk8d37lcx" path="res://assets/audio/lantern-charge.mp3" id="7_7dsus"]
+[ext_resource type="AudioStream" uid="uid://dkeejytkleb0o" path="res://assets/audio/volley-1.mp3" id="8_5htja"]
+[ext_resource type="AudioStream" uid="uid://cx3spsm1dhxgf" path="res://assets/audio/volley-2.mp3" id="9_03d4j"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_xv42d"]
 radius = 0.2
@@ -12,12 +16,14 @@ radius = 0.2
 [sub_resource type="SphereShape3D" id="SphereShape3D_hlffu"]
 radius = 0.3
 
-[node name="Node3D" type="RigidBody3D" node_paths=PackedStringArray("normal_sprite", "fast_sprite")]
+[node name="Node3D" type="RigidBody3D" node_paths=PackedStringArray("normal_sprite", "fast_sprite", "volley_sounds", "damage_sound")]
 axis_lock_linear_y = true
 linear_damp = 6.0
 script = ExtResource("1_kksyh")
 normal_sprite = NodePath("Normal")
 fast_sprite = NodePath("Fast")
+volley_sounds = [NodePath("Volley"), NodePath("Volley2")]
+damage_sound = NodePath("Damage")
 
 [node name="FakeLight" parent="." node_paths=PackedStringArray("col") instance=ExtResource("2_1yiuc")]
 col = NodePath("Area3D/CollisionShape3D")
@@ -38,12 +44,32 @@ billboard = 2
 texture_filter = 2
 texture = ExtResource("4_4d6yo")
 
-[node name="Hitter" type="Area3D" parent="." node_paths=PackedStringArray("light_proj")]
+[node name="Hitter" type="Area3D" parent="." node_paths=PackedStringArray("light_proj", "rend_sound", "absorb_sound")]
 script = ExtResource("4_3qxlj")
 light_proj = NodePath("..")
+rend_sound = NodePath("../Rend")
+absorb_sound = NodePath("../Absorb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Hitter"]
 shape = SubResource("SphereShape3D_hlffu")
+
+[node name="Rend" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("6_04nh1")
+
+[node name="Absorb" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("7_7dsus")
+
+[node name="Volley" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("8_5htja")
+
+[node name="Volley2" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("9_03d4j")
+volume_db = -16.0
+
+[node name="Damage" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("9_03d4j")
+volume_db = -16.0
+pitch_scale = 6.0
 
 [connection signal="area_entered" from="Hitter" to="Hitter" method="_on_area_3d_area_entered"]
 [connection signal="body_entered" from="Hitter" to="Hitter" method="_on_area_3d_body_entered"]

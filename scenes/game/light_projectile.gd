@@ -8,6 +8,9 @@ const GRAVITATION_SPEED = 45.0
 @export var normal_sprite: Sprite3D
 @export var fast_sprite: Sprite3D
 
+@export var volley_sounds: Array[AudioStreamPlayer3D]
+@export var damage_sound: AudioStreamPlayer3D
+
 var sender: Node3D
 var gravitate_towards: Node3D
 var max_health := 4
@@ -25,6 +28,9 @@ func damage(damage: int, damage_type: Global.DamageType, source: Node) -> void:
 	if source == sender:
 		var move := Vector3(source.camera_forward.global_position - source.camera.global_position)
 		apply_central_impulse(move.normalized() * HIT_SPEED * damage)
+		volley_sounds.pick_random().play()
+	else:
+		damage_sound.play()
 	health -= 1
 	damage_check()
 	if source is LightProjectile:

@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://pqwhddnjm8an"]
+[gd_scene load_steps=25 format=3 uid="uid://pqwhddnjm8an"]
 
 [ext_resource type="Script" path="res://scenes/game/player.gd" id="1_igxis"]
 [ext_resource type="Script" path="res://scenes/game/shake_camera.gd" id="2_0rjhe"]
@@ -6,8 +6,16 @@
 [ext_resource type="Texture2D" uid="uid://dno8bsoldc848" path="res://assets/textures/test_light.png" id="3_3lhi1"]
 [ext_resource type="Animation" uid="uid://i5u7wt5ilutx" path="res://assets/anims/light_summon.res" id="3_6e8db"]
 [ext_resource type="Script" path="res://scenes/game/shake_weapon.gd" id="4_vesmt"]
+[ext_resource type="AudioStream" uid="uid://db7t6elimvhke" path="res://assets/audio/mace-1.mp3" id="4_w0d0p"]
+[ext_resource type="AudioStream" uid="uid://bx15ul8rs4ccm" path="res://assets/audio/mace-2.mp3" id="5_kuho0"]
+[ext_resource type="AudioStream" uid="uid://bgsproej7g8ov" path="res://assets/audio/gore-1.mp3" id="6_4kkvf"]
 [ext_resource type="Script" path="res://scenes/game/personal_light_sprite.gd" id="7_760ix"]
 [ext_resource type="Texture2D" uid="uid://jdvtfcwwjaw1" path="res://assets/textures/mace_attack.png" id="7_asw1k"]
+[ext_resource type="AudioStream" uid="uid://o6csgf830ddn" path="res://assets/audio/gore-2.mp3" id="7_blf2t"]
+[ext_resource type="AudioStream" uid="uid://dq5oefxmgunoy" path="res://assets/audio/gore-3.mp3" id="8_egfj6"]
+[ext_resource type="AudioStream" uid="uid://tl27kct5nq0g" path="res://assets/audio/gore-4.mp3" id="9_ri00g"]
+[ext_resource type="AudioStream" uid="uid://y5qj8aq047is" path="res://assets/audio/dispel-1.mp3" id="10_h1qy4"]
+[ext_resource type="AudioStream" uid="uid://d24x4w86eqrfo" path="res://assets/audio/recall.mp3" id="11_5g38a"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_nwppc"]
 
@@ -130,7 +138,7 @@ _data = {
 "light_summon": ExtResource("3_6e8db")
 }
 
-[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("camera", "camera_forward", "mace_anim_player", "light_anim_player", "walk_pivot", "personal_light_sprite", "fake_light")]
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("camera", "camera_forward", "mace_anim_player", "light_anim_player", "walk_pivot", "mace_sounds", "gore_sounds", "dispel_sound", "recall_sound", "personal_light_sprite", "fake_light")]
 axis_lock_linear_y = true
 motion_mode = 1
 script = ExtResource("1_igxis")
@@ -139,6 +147,10 @@ camera_forward = NodePath("Pitch/Camera3D/Node3D")
 mace_anim_player = NodePath("MacePlayer")
 light_anim_player = NodePath("LightPlayer")
 walk_pivot = NodePath("Center/WalkPivot")
+mace_sounds = [NodePath("Pitch/Camera3D/Mace1"), NodePath("Pitch/Camera3D/Mace2")]
+gore_sounds = [NodePath("Pitch/Gore"), NodePath("Pitch/Gore2"), NodePath("Pitch/Gore3"), NodePath("Pitch/Gore4")]
+dispel_sound = NodePath("Pitch/Dispel")
+recall_sound = NodePath("Pitch/Recall")
 personal_light_sprite = NodePath("Center/WalkPivot/Personalight")
 fake_light = NodePath("FakeLight")
 
@@ -168,6 +180,38 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
 [node name="SlashArea" type="CollisionPolygon3D" parent="Pitch/Camera3D/Area3D"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0)
 polygon = PackedVector2Array(0, 0, 0.3, 1, -0.3, 1)
+
+[node name="Mace1" type="AudioStreamPlayer3D" parent="Pitch/Camera3D"]
+stream = ExtResource("4_w0d0p")
+volume_db = -12.0
+
+[node name="Mace2" type="AudioStreamPlayer3D" parent="Pitch/Camera3D"]
+stream = ExtResource("5_kuho0")
+volume_db = -3.0
+
+[node name="Gore" type="AudioStreamPlayer3D" parent="Pitch"]
+stream = ExtResource("6_4kkvf")
+volume_db = -12.0
+
+[node name="Gore2" type="AudioStreamPlayer3D" parent="Pitch"]
+stream = ExtResource("7_blf2t")
+volume_db = -14.0
+
+[node name="Gore3" type="AudioStreamPlayer3D" parent="Pitch"]
+stream = ExtResource("8_egfj6")
+volume_db = -8.0
+
+[node name="Gore4" type="AudioStreamPlayer3D" parent="Pitch"]
+stream = ExtResource("9_ri00g")
+volume_db = -8.0
+
+[node name="Dispel" type="AudioStreamPlayer3D" parent="Pitch"]
+stream = ExtResource("10_h1qy4")
+volume_db = -8.0
+
+[node name="Recall" type="AudioStreamPlayer3D" parent="Pitch"]
+stream = ExtResource("11_5g38a")
+volume_db = -12.0
 
 [node name="MacePlayer" type="AnimationPlayer" parent="."]
 libraries = {

@@ -1,3 +1,17 @@
-[gd_resource type="AudioBusLayout" format=3 uid="uid://tn2y83o3fn8v"]
+[gd_resource type="AudioBusLayout" load_steps=3 format=3 uid="uid://tn2y83o3fn8v"]
+
+[sub_resource type="AudioEffectDistortion" id="AudioEffectDistortion_eehcv"]
+resource_name = "Distortion"
+mode = 2
+keep_hf_hz = 4000.0
+drive = 0.2
+post_gain = -3.0
+
+[sub_resource type="AudioEffectBandPassFilter" id="AudioEffectBandPassFilter_ovqo8"]
+resource_name = "BandPassFilter"
 
 [resource]
+bus/0/effect/0/effect = SubResource("AudioEffectDistortion_eehcv")
+bus/0/effect/0/enabled = true
+bus/0/effect/1/effect = SubResource("AudioEffectBandPassFilter_ovqo8")
+bus/0/effect/1/enabled = true

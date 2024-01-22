@@ -156,7 +156,7 @@ class BSP_Node extends RefCounted:
 			return left_child.get_leaves() + right_child.get_leaves()
 	func split(count: int, paths: Array[Dictionary]) -> void:
 		var rng := RandomNumberGenerator.new()
-		var split_percent := rng.randf_range(0.3, 0.7)
+		var split_percent := rng.randf_range(0.4, 0.6)
 		var split_horizontal := bounds.size.y >= bounds.size.x
 		if split_horizontal:
 			var left_height := int(bounds.size.y * split_percent)

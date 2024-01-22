@@ -1,6 +1,8 @@
 extends Area3D
 
 @export var light_proj : LightProjectile
+@export var rend_sound: AudioStreamPlayer3D
+@export var absorb_sound: AudioStreamPlayer3D
 
 func _on_area_3d_area_entered(area: Area3D) -> void:
 	_hit_check(area)
@@ -12,6 +14,7 @@ func _hit_check(node: Node3D) -> void:
 	if node == light_proj.gravitate_towards:
 		if node is Player:
 			node.absorb_light(light_proj)
+			Util.preserve_and_oneshot_sound(absorb_sound)
 			light_proj.queue_free()
 	if node == self or node is LightProjectile:
 		return
@@ -24,7 +27,9 @@ func _hit_check(node: Node3D) -> void:
 			#light_proj.queue_free()
 			light_proj.health -= 1
 			light_proj.damage_check()
+			rend_sound.play()
 	else:
 		if node is Lighteater:
 			node.damage(1, Global.DamageType.MAGIC, light_proj)
+			Util.preserve_and_oneshot_sound(absorb_sound)
 			light_proj.queue_free()
