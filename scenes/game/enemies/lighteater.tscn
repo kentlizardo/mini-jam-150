@@ -101,7 +101,7 @@ pixel_size = 0.05
 billboard = 2
 texture_filter = 2
 sprite_frames = SubResource("SpriteFrames_qj6ot")
-frame_progress = 0.539165
+frame_progress = 0.413803
 
 [node name="Area3D" type="Area3D" parent="."]
 script = ExtResource("3_fvuqv")

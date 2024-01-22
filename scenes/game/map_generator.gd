@@ -3,8 +3,8 @@ extends Control
 const INITIAL_ROOM_SIZE := Rect2i(-12, -40, 24, 80)
 const MONSTERS_PER_ROOM := Vector2i(2, 4)
 var MONSTER_TABLE := [
-	#load("res://scenes/game/enemies/goblin.tscn"),
-	#load("res://scenes/game/enemies/armor.tscn"),
+	load("res://scenes/game/enemies/goblin.tscn"),
+	load("res://scenes/game/enemies/armor.tscn"),
 	load("res://scenes/game/enemies/lighteater.tscn"),
 ]
 var LANTERN := load("res://scenes/game/enemies/lantern.tscn")
@@ -112,13 +112,13 @@ func build() -> void:
 				set_tile(tile_pos, FLOOR)
 	var ladder_spawns := []
 	var player_spawns := []
-	for y in range(5):
+	for y in range(20):
 		for x in range(root_node.bounds.size.x):
 			var tile_pos := Vector2i(root_node.bounds.position.x + x, root_node.bounds.position.y + y)
 			if tiles.has(tile_pos):
 				if tiles[tile_pos] is TileFloor and !tile_entities.keys().has(tile_pos):
 					ladder_spawns.push_back(tile_pos)
-	for y in range(5):
+	for y in range(20):
 		for x in range(root_node.bounds.size.x):
 			var tile_pos := Vector2i(root_node.bounds.position.x + x, root_node.bounds.position.y + root_node.bounds.size.y - y)
 			if tiles.has(tile_pos):
@@ -135,7 +135,7 @@ func build() -> void:
 	var l_spawn := ladder_spawns.pick_random() as Vector2i
 	add_entity(l_spawn, load("res://scenes/game/enemies/ladder.tscn"))
 	for i: Node3D in tile_entities.values():
-		if i.global_position.distance_to(player.global_position) <= 10:
+		if i.global_position.distance_to(player.global_position) <= 20:
 			i.queue_free()
 
 # References:

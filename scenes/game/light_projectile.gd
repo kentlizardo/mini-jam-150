@@ -31,8 +31,8 @@ func damage(damage: int, damage_type: Global.DamageType, source: Node) -> void:
 		volley_sounds.pick_random().play()
 	else:
 		damage_sound.play()
-	health -= 1
-	damage_check()
+		health -= 1
+		damage_check()
 	if source is LightProjectile:
 		push_error("Create stun")
 
