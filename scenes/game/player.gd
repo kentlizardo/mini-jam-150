@@ -15,11 +15,11 @@ var able_to_slash : Array[Node3D] = []
 
 func _init() -> void:
 	add_to_group("player")
+	current_player = self
 
 static var current_player : Player
 func _ready() -> void:
 	_capture_mouse()
-	current_player = self
 
 func damage(damage: int, damage_type: Global.DamageType, source: Node) -> void:
 	print("Player damaged")

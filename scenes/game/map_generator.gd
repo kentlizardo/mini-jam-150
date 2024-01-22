@@ -3,8 +3,8 @@ extends Control
 const INITIAL_ROOM_SIZE := Rect2i(-12, -40, 24, 80)
 const MONSTERS_PER_ROOM := Vector2i(2, 4)
 var MONSTER_TABLE := [
-	#load("res://scenes/game/enemies/goblin.tscn"),
-	#load("res://scenes/game/enemies/armor.tscn"),
+	load("res://scenes/game/enemies/goblin.tscn"),
+	load("res://scenes/game/enemies/armor.tscn"),
 	load("res://scenes/game/enemies/lighteater.tscn"),
 ]
 var LANTERN := load("res://scenes/game/enemies/lantern.tscn")
@@ -17,7 +17,8 @@ var root_node: BSP_Node
 var paths: Array[Dictionary] = []
 var tiles := {} # tile_pos -> Node3D
 var tile_entities := {} # tile_pos -> Node3D
-var player_marker := Vector2.ZERO
+var floor_pos_to_room := {} # floor_pos -> leaf BSP_Node
+var player_marker := Vector2i.ZERO
 
 func _ready() -> void:
 	root_node = BSP_Node.new(INITIAL_ROOM_SIZE)
@@ -32,8 +33,10 @@ func _draw() -> void:
 			leaf.bounds.size * tile_size
 		)
 		r.position += Vector2i(size / 2)
+		if leaf.entered:
+			draw_rect(r, Color.TEAL, true)
 		draw_rect(r, Color.PALE_VIOLET_RED, false)
-	var p := player_marker * tile_size + Vector2(size / 2)
+	var p := Vector2(player_marker) * tile_size + Vector2(size / 2)
 	draw_circle(p, tile_size * 2, Color.BLUE)
 
 const WALL := preload("res://scenes/game/map/tile_wall.tscn")
@@ -42,7 +45,7 @@ const MIN_PADDING := 1
 const MAX_PADDING := 2
 
 func check_padding(pos: Vector2i, padding: Vector4i, leaf: BSP_Node) -> bool:
-	return pos.x <= padding.x or pos.y <= padding.y or pos.x > leaf.bounds.size.x - padding.w or pos.y > leaf.bounds.size.y - padding.z
+	return pos.x <= padding.x or pos.y <= padding.y or pos.x > leaf.bounds.size.x - padding.w - 1 or pos.y > leaf.bounds.size.y - padding.z - 1
 
 func set_tile(tile_pos: Vector2i, scene: PackedScene) -> void:
 	if tiles.has(tile_pos):
@@ -65,6 +68,8 @@ func add_entity(tile_pos: Vector2i, scene: PackedScene) -> void:
 
 func set_player_floor(pos: Vector2i) -> void:
 	player_marker = pos
+	if floor_pos_to_room.has(pos):
+		floor_pos_to_room[pos].entered = true
 	queue_redraw()
 
 func build() -> void:
@@ -84,6 +89,7 @@ func build() -> void:
 					set_tile(tile_pos, WALL)
 				else:
 					set_tile(tile_pos, FLOOR)
+					floor_pos_to_room[tile_pos] = leaf
 					leaf.data["unoccupied"].append(tile_pos)
 		for i in range(0, randi_range(MONSTERS_PER_ROOM.x, MONSTERS_PER_ROOM.y)):
 			if leaf.data["unoccupied"].size() > 0:
@@ -119,8 +125,10 @@ func build() -> void:
 				if tiles[tile_pos] is TileFloor and !tile_entities.keys().has(tile_pos):
 					player_spawns.push_back(tile_pos)
 	await get_tree().process_frame
+	for leaf in root_node.get_leaves():
+		leaf.entered = false
 	var p_spawn := player_spawns.pick_random() as Vector2i
-	var player := get_tree().get_first_node_in_group("player") as Player
+	var player := Player.current_player
 	player.position.x = p_spawn.x * 2
 	player.position.z = p_spawn.y * 2
 	player.position.y = 1
@@ -138,6 +146,7 @@ class BSP_Node extends RefCounted:
 	var bounds: Rect2i
 	
 	var data : Dictionary = {}
+	var entered := false
 	func _init(bounds: Rect2i) -> void:
 		self.bounds = bounds
 	func get_leaves() -> Array[BSP_Node]:

@@ -33,10 +33,11 @@ var lantern_state := LanternState.UNLIT:
 var light : FakeLight
 var health := 3
 
+var norm_sprite := load("res://assets/textures/light.png") as Texture2D
 func damage(damage: int, damage_type: Global.DamageType, source: Node) -> void:
 	if damage_type == Global.DamageType.MAGIC:
 		if source is LightProjectile:
-			if source.sender is Player:
+			if source.normal_sprite.texture == norm_sprite:
 				lantern_state = LanternState.LIT
 				source.transmuted.emit(self)
 			else:

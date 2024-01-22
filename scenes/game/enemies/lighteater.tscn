@@ -80,7 +80,7 @@ animations = [{
 }]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_j7oas"]
-radius = 7.0
+radius = 12.0
 
 [node name="Lighteater" type="CharacterBody3D" node_paths=PackedStringArray("sprite", "vision")]
 script = ExtResource("1_e3tyx")

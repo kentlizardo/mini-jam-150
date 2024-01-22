@@ -14,7 +14,6 @@ func _hit_check(node: Node3D) -> void:
 			node.absorb_light(light_proj)
 			light_proj.queue_free()
 	if node == self or node is LightProjectile:
-		push_error("create stun")
 		return
 	if light_proj.sender == node:
 		return

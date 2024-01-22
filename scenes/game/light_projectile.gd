@@ -15,6 +15,7 @@ var health := 4
 func damage(damage: int, damage_type: Global.DamageType, source: Node) -> void:
 	if source is Player:
 		var move := Vector3(source.camera_forward.global_position - source.camera.global_position)
+		sender = source
 		apply_central_impulse(move.normalized() * HIT_SPEED * damage)
 	if source is LightProjectile:
 		push_error("Create stun")
