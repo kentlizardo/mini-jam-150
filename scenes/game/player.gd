@@ -56,20 +56,31 @@ func _unhandled_input(event: InputEvent) -> void:
 		start_combo()
 		get_viewport().set_input_as_handled()
 	if Input.is_action_just_pressed("secondary"):
-		if !is_instance_valid(light_proj):
-			start_light()
-		else:
+		if is_instance_valid(light_proj):
 			start_recall()
+		else:
+			if personal_light:
+				var tw := personal_light_sprite.create_tween()
+				tw.tween_property(personal_light_sprite, "target_position", PersonalLightSprite.HIT_POS, 0.5).from_current().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_QUINT)
+			else:
+				start_light()
 		get_viewport().set_input_as_handled()
 	if Input.is_action_just_released("secondary"):
-		if !is_instance_valid(light_proj):
-			release_light()
-		else:
+		if is_instance_valid(light_proj):
 			stop_recall()
+		else:
+			if personal_light:
+				var tw := personal_light_sprite.create_tween()
+				tw.tween_property(personal_light_sprite, "target_position", Vector2.ZERO, 0.5).from_current().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_QUINT)
+			else:
+				release_light()
 		get_viewport().set_input_as_handled()
 	if Input.is_action_just_pressed("dispel"):
 		if is_instance_valid(light_proj):
 			dispel_light()
+		else:
+			if personal_light:
+				personal_light = false
 		get_viewport().set_input_as_handled()
 
 func _capture_mouse() -> void:
@@ -90,18 +101,31 @@ var light_proj : Node3D:
 func _on_transmute(next_light: Node3D) -> void:
 	light_proj = next_light
 
+@export var personal_light_sprite : PersonalLightSprite
+@export var fake_light : FakeLight
+var personal_light := false:
+	set(x):
+		personal_light = x
+		personal_light_sprite.position = Vector2.ZERO
+		personal_light_sprite.target_position = Vector2.ZERO
+		personal_light_sprite.visible = personal_light
+		fake_light.radius = 5 if personal_light else 3
 func start_light() -> void:
 	light_anim_player.stop()
 	light_anim_player.play("light_summon")
 func release_light() -> void:
 	light_anim_player.stop()
 	if charged:
+		personal_light = true
 		charged = false
-		light_proj = LIGHT_PROJECTILE_TEMPLATE.instantiate() as LightProjectile
-		light_proj.sender = self
-		get_parent().add_child(light_proj)
-		light_proj.global_position = camera_forward.global_position
-		light_proj.linear_velocity = get_real_velocity()
+func send_light() -> void:
+	light_anim_player.stop()
+	light_proj = LIGHT_PROJECTILE_TEMPLATE.instantiate() as LightProjectile
+	light_proj.sender = self
+	get_parent().add_child(light_proj)
+	light_proj.global_position = camera_forward.global_position
+	light_proj.linear_velocity = get_real_velocity()
+	light_proj.apply_central_impulse((camera_forward.global_position - global_position).normalized() * LightProjectile.HIT_SPEED)
 func start_recall() -> void:
 	if light_proj is Lantern:
 		light_proj.recall()
@@ -134,6 +158,14 @@ func start_combo() -> void:
 		combo = ""
 		mace_anim_player.play("attack_1")
 func _attack(damage: int) -> void:
+	if personal_light:
+		if personal_light_sprite.position.distance_to(PersonalLightSprite.HIT_POS) <= 20.0:
+			send_light()
+			personal_light = false
+			walk_pivot.add_trauma(50.0 * damage)
+			camera.add_trauma(25.0 * damage)
+			Game.current.short_pause(0.1 * damage)
+			return
 	var slashing : Node
 	var dist := -1
 	var attacked := false

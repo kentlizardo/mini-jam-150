@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://pqwhddnjm8an"]
+[gd_scene load_steps=17 format=3 uid="uid://pqwhddnjm8an"]
 
 [ext_resource type="Script" path="res://scenes/game/player.gd" id="1_igxis"]
 [ext_resource type="Script" path="res://scenes/game/shake_camera.gd" id="2_0rjhe"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://dno8bsoldc848" path="res://assets/textures/test_light.png" id="3_3lhi1"]
 [ext_resource type="Animation" uid="uid://i5u7wt5ilutx" path="res://assets/anims/light_summon.res" id="3_6e8db"]
 [ext_resource type="Script" path="res://scenes/game/shake_weapon.gd" id="4_vesmt"]
+[ext_resource type="Script" path="res://scenes/game/personal_light_sprite.gd" id="7_760ix"]
 [ext_resource type="Texture2D" uid="uid://jdvtfcwwjaw1" path="res://assets/textures/mace_attack.png" id="7_asw1k"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_nwppc"]
@@ -129,7 +130,7 @@ _data = {
 "light_summon": ExtResource("3_6e8db")
 }
 
-[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("camera", "camera_forward", "mace_anim_player", "light_anim_player", "walk_pivot")]
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("camera", "camera_forward", "mace_anim_player", "light_anim_player", "walk_pivot", "personal_light_sprite")]
 axis_lock_linear_y = true
 motion_mode = 1
 script = ExtResource("1_igxis")
@@ -138,6 +139,7 @@ camera_forward = NodePath("Pitch/Camera3D/Node3D")
 mace_anim_player = NodePath("MacePlayer")
 light_anim_player = NodePath("LightPlayer")
 walk_pivot = NodePath("Center/WalkPivot")
+personal_light_sprite = NodePath("Center/WalkPivot/Personalight")
 
 [node name="FakeLight" parent="." node_paths=PackedStringArray("col") instance=ExtResource("2_6r2ux")]
 radius = 3.0
@@ -183,14 +185,21 @@ position = Vector2(160, 90)
 process_mode = 3
 script = ExtResource("4_vesmt")
 
-[node name="Mace" type="Sprite2D" parent="Center/WalkPivot"]
-texture = ExtResource("7_asw1k")
+[node name="Personalight" type="Sprite2D" parent="Center/WalkPivot"]
+visible = false
+texture = ExtResource("3_3lhi1")
 hframes = 5
-vframes = 4
+frame = 4
+script = ExtResource("7_760ix")
 
 [node name="Light" type="Sprite2D" parent="Center/WalkPivot"]
 texture = ExtResource("3_3lhi1")
 hframes = 5
+
+[node name="Mace" type="Sprite2D" parent="Center/WalkPivot"]
+texture = ExtResource("7_asw1k")
+hframes = 5
+vframes = 4
 
 [connection signal="area_entered" from="Pitch/Camera3D/Area3D" to="." method="_on_slash_area_3d_area_entered"]
 [connection signal="area_exited" from="Pitch/Camera3D/Area3D" to="." method="_on_slash_area_3d_area_exited"]
