@@ -19,9 +19,10 @@ var health := 4:
 		fast_sprite.modulate.a = 0.25 * health
 
 func damage(damage: int, damage_type: Global.DamageType, source: Node) -> void:
+	if source is Player:
+		sender = source
 	if source == sender:
 		var move := Vector3(source.camera_forward.global_position - source.camera.global_position)
-		sender = source
 		apply_central_impulse(move.normalized() * HIT_SPEED * damage)
 	health -= 1
 	damage_check()

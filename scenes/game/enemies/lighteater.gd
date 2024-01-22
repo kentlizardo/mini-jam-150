@@ -4,12 +4,17 @@ enum BirdState {
 	SEARCH,
 	ABSORB,
 	SHOOT,
+	DYING,
 }
 
-const SPEED = 5.0
+const SPEED = 1.0
 
 @export var sprite: AnimatedSprite3D
 @export var vision: Vision
+
+@export var melee: Vision
+var melee_timer := 0.0
+var melee_cooldown := 0.8
 
 var drive_vector := Vector3.ZERO
 var absorb_timer := 0.0
@@ -32,6 +37,11 @@ var state : BirdState = BirdState.SEARCH:
 				await sprite.animation_finished
 				shoot()
 				next_state(BirdState.SEARCH)
+			BirdState.DYING:
+				var tw := create_tween()
+				tw.tween_property(sprite, "modulate:a", 0.0, 0.8).set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC)
+				await tw.finished
+				queue_free()
 
 func _next_state(s: BirdState) -> void:
 	state = s
@@ -72,6 +82,18 @@ func _process(delta: float) -> void:
 		else:
 			if player_target:
 				drive_vector = -(player_target.global_position - global_position).normalized()
+		if is_instance_valid(melee):
+			if melee.seen.size() > 0:
+				melee_timer += delta
+				if melee_timer >= melee_cooldown:
+					for obj: Node3D in melee.seen:
+						if obj is Lantern:
+							if obj.lantern_state != Lantern.LanternState.UNLIT:
+								if obj.has_method("damage"):
+									obj.damage(1, Global.DamageType.PHYSICAL, self)
+					melee_timer = 0.0
+			else:
+				melee_timer = 0.0
 	else:
 		drive_vector = Vector3.ZERO
 
@@ -100,7 +122,4 @@ func damage(damage: int, damage_type: Global.DamageType, source: Node) -> void:
 
 func damage_check() -> void:
 	if health <= 0:
-		var tw := (sprite as SpriteBase3D).create_tween()
-		tw.tween_property((sprite as SpriteBase3D), "modulate:a", 0.0, 0.8).set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC)
-		await tw.finished
-		queue_free()
+		next_state(BirdState.DYING)

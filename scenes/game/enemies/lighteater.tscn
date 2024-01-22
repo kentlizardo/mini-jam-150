@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://ck7tmn70i8um7"]
+[gd_scene load_steps=15 format=3 uid="uid://ck7tmn70i8um7"]
 
 [ext_resource type="Texture2D" uid="uid://c7lwkob07yj2s" path="res://assets/textures/enemies.png" id="1_asod6"]
 [ext_resource type="Script" path="res://scenes/game/enemies/lighteater.gd" id="1_e3tyx"]
@@ -82,10 +82,14 @@ animations = [{
 [sub_resource type="SphereShape3D" id="SphereShape3D_j7oas"]
 radius = 12.0
 
-[node name="Lighteater" type="CharacterBody3D" node_paths=PackedStringArray("sprite", "vision")]
+[sub_resource type="SphereShape3D" id="SphereShape3D_327ks"]
+radius = 1.2
+
+[node name="Lighteater" type="CharacterBody3D" node_paths=PackedStringArray("sprite", "vision", "melee")]
 script = ExtResource("1_e3tyx")
 sprite = NodePath("AnimatedSprite3D")
 vision = NodePath("Area3D")
+melee = NodePath("Melee")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CylinderShape3D_xree5")
@@ -104,3 +108,9 @@ script = ExtResource("3_fvuqv")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
 shape = SubResource("SphereShape3D_j7oas")
+
+[node name="Melee" type="Area3D" parent="."]
+script = ExtResource("3_fvuqv")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Melee"]
+shape = SubResource("SphereShape3D_327ks")

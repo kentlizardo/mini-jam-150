@@ -1,9 +1,9 @@
-[gd_scene load_steps=11 format=3 uid="uid://vqcrkykkf8cc"]
+[gd_scene load_steps=13 format=3 uid="uid://vqcrkykkf8cc"]
 
 [ext_resource type="Script" path="res://scenes/game/enemies/armor.gd" id="1_bs6vd"]
 [ext_resource type="Script" path="res://scenes/game/hurt_box.gd" id="2_gtdoo"]
-[ext_resource type="Script" path="res://scenes/game/components/health.gd" id="2_s5nq5"]
 [ext_resource type="Texture2D" uid="uid://c7lwkob07yj2s" path="res://assets/textures/enemies.png" id="2_uxn77"]
+[ext_resource type="Script" path="res://scenes/game/components/vision.gd" id="4_fp1qs"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_6xkw6"]
 atlas = ExtResource("2_uxn77")
@@ -40,20 +40,27 @@ size = Vector3(0.8, 2, 0.5)
 [sub_resource type="BoxShape3D" id="BoxShape3D_68qqw"]
 size = Vector3(1, 2, 0.38)
 
-[node name="Armor" type="CharacterBody3D"]
+[sub_resource type="SphereShape3D" id="SphereShape3D_fmi0c"]
+radius = 8.0
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_7oh7x"]
+radius = 1.0
+
+[node name="Armor" type="CharacterBody3D" node_paths=PackedStringArray("sprite", "vision", "melee")]
 script = ExtResource("1_bs6vd")
+sprite = NodePath("AnimatedSprite3D")
+vision = NodePath("Vision")
+melee = NodePath("Melee")
 
 [node name="AnimatedSprite3D" type="AnimatedSprite3D" parent="."]
 pixel_size = 0.05
 billboard = 2
 texture_filter = 2
 sprite_frames = SubResource("SpriteFrames_q0mic")
+frame_progress = 0.788709
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_c2exf")
-
-[node name="Health" type="Node" parent="."]
-script = ExtResource("2_s5nq5")
 
 [node name="HurtBox" type="Area3D" parent="."]
 script = ExtResource("2_gtdoo")
@@ -62,12 +69,24 @@ script = ExtResource("2_gtdoo")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.15757)
 shape = SubResource("BoxShape3D_6e66u")
 
-[node name="Front" type="Area3D" parent="."]
+[node name="Shield" type="Area3D" parent="."]
 script = ExtResource("2_gtdoo")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Front"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Shield"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.221147)
 shape = SubResource("BoxShape3D_68qqw")
 
-[connection signal="die" from="Health" to="." method="queue_free"]
-[connection signal="damaged" from="HurtBox" to="Health" method="damage"]
+[node name="Vision" type="Area3D" parent="."]
+script = ExtResource("4_fp1qs")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Vision"]
+shape = SubResource("SphereShape3D_fmi0c")
+
+[node name="Melee" type="Area3D" parent="."]
+script = ExtResource("4_fp1qs")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Melee"]
+shape = SubResource("SphereShape3D_7oh7x")
+
+[connection signal="damaged" from="HurtBox" to="." method="_on_hurt_box_damaged"]
+[connection signal="damaged" from="Shield" to="." method="_on_shield_damaged"]
