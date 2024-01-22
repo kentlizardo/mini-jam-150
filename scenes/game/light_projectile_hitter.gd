@@ -25,8 +25,8 @@ func _hit_check(node: Node3D) -> void:
 			node.damage(1, Global.DamageType.MAGIC, light_proj)
 			ShakeCamera.current_cam.add_trauma(10.0)
 			#light_proj.queue_free()
-			light_proj.health -= 1
-			light_proj.damage_check()
+			#light_proj.health -= 1
+			#light_proj.damage_check()
 			rend_sound.play()
 	else:
 		if node is Lighteater:

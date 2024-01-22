@@ -7,6 +7,11 @@ func _ready() -> void:
 	body_exited.connect(_on_body_exited)
 
 func _on_body_entered(body: Node3D) -> void:
+	if get_parent_node_3d():
+		if body == get_parent_node_3d():
+			return
 	seen.append(body)
 func _on_body_exited(body: Node3D) -> void:
-	seen.remove_at(seen.find(body))
+	var x := seen.find(body)
+	if x != -1:
+		seen.remove_at(x)

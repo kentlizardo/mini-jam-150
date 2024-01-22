@@ -95,8 +95,9 @@ func _process(delta: float) -> void:
 									if obj.has_method("damage"):
 										obj.damage(1, Global.DamageType.PHYSICAL, self)
 							else:
-								if obj.has_method("damage"):
-									obj.damage(1, Global.DamageType.PHYSICAL, self)
+								if obj is Player:
+									if obj.has_method("damage"):
+										obj.damage(1, Global.DamageType.PHYSICAL, self)
 					melee_timer = 0.0
 			else:
 				melee_timer = 0.0
