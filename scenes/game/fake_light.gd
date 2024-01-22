@@ -8,6 +8,7 @@ class_name FakeLight extends Node3D
 		var shape := SphereShape3D.new()
 		shape.radius = x
 		col.shape = shape
+		LightHelper.set_dirty()
 
 @export var col : CollisionShape3D
 

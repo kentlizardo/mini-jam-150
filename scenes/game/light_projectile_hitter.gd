@@ -20,7 +20,7 @@ func _hit_check(node: Node3D) -> void:
 	if light_proj.fast_sprite.visible:
 		if node.has_method("damage"):
 			node.damage(1, Global.DamageType.MAGIC, light_proj)
-			ShakeCamera.current_cam.add_trauma(25.0)
+			ShakeCamera.current_cam.add_trauma(10.0)
 			#light_proj.queue_free()
 			light_proj.health -= 1
 			light_proj.damage_check()

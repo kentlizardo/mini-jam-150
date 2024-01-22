@@ -1,5 +1,5 @@
 extends CharacterBody3D
-const SPEED = 0.4
+const SPEED = 2.0
 
 enum ArmorState {
 	SEARCH,

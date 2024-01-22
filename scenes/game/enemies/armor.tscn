@@ -57,7 +57,7 @@ pixel_size = 0.05
 billboard = 2
 texture_filter = 2
 sprite_frames = SubResource("SpriteFrames_q0mic")
-frame_progress = 0.788709
+frame_progress = 0.232916
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_c2exf")

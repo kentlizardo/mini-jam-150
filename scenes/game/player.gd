@@ -12,6 +12,7 @@ const SPEED = 5.0
 @export var walk_pivot : ShakeWeapon
 
 var able_to_slash : Array[Node3D] = []
+var health := 5
 
 func _init() -> void:
 	add_to_group("player")
@@ -22,8 +23,8 @@ func _ready() -> void:
 	_capture_mouse()
 
 func damage(damage: int, damage_type: Global.DamageType, source: Node) -> void:
-	print("Player damaged")
-	camera.add_trauma(5.0)
+	camera.add_trauma(35.0)
+	health -= 1
 
 func _physics_process(delta: float) -> void:
 	# Get the input direction and handle the movement/deceleration.

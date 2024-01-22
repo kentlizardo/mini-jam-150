@@ -7,7 +7,7 @@ enum BirdState {
 	DYING,
 }
 
-const SPEED = 1.0
+const SPEED = 4.0
 
 @export var sprite: AnimatedSprite3D
 @export var vision: Vision
@@ -106,6 +106,7 @@ func shoot() -> void:
 		var proj_temp := load("res://scenes/game/bird_light_projectile.tscn") as PackedScene
 		var proj := proj_temp.instantiate() as BirdLightProjectile
 		proj.sender = self
+		proj.health = 2
 		var move := Vector3(target.global_position - global_position)
 		get_parent().add_child(proj)
 		proj.global_position = global_position + move.normalized() * 1.0
