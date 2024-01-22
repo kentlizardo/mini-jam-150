@@ -1,4 +1,4 @@
-extends CharacterBody3D
+class_name Lighteater extends CharacterBody3D
 
 enum BirdState {
 	SEARCH,

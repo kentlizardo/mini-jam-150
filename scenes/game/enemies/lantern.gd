@@ -29,6 +29,8 @@ var lantern_state := LanternState.UNLIT:
 				sprite.play("blue")
 			LanternState.UNLIT:
 				sprite.play("default")
+		last_sender = null
+var last_sender : Node3D
 
 var light : FakeLight
 var health := 3
@@ -42,6 +44,7 @@ func damage(damage: int, damage_type: Global.DamageType, source: Node) -> void:
 				source.transmuted.emit(self)
 			else:
 				lantern_state = LanternState.BLUE
+			last_sender = source.sender
 		else:
 			lantern_state = LanternState.BLUE
 		source.queue_free()
@@ -53,14 +56,16 @@ func damage_check() -> void:
 	if health <= 0:
 		match lantern_state:
 			LanternState.LIT:
-				var droplight := PROJ_LIGHT.instantiate()
+				var droplight := PROJ_LIGHT.instantiate() as LightProjectile
 				get_parent().add_child(droplight)
 				droplight.global_position = global_position
+				droplight.sender = last_sender
 				transmuted.emit(droplight)
 			LanternState.BLUE:
-				var droplight := PROJ_BLUELIGHT.instantiate()
+				var droplight := PROJ_BLUELIGHT.instantiate() as LightProjectile
 				get_parent().add_child(droplight)
 				droplight.global_position = global_position
+				droplight.sender = last_sender
 		queue_free()
 
 func dispel_light() -> void:
@@ -72,6 +77,6 @@ func recall() -> void:
 	get_parent().add_child(droplight)
 	var r : Vector3 = Player.current_player.global_position - global_position
 	droplight.global_position = global_position + r.normalized() * 1.0
-	droplight.add_to_group("player")
+	droplight.sender = last_sender
 	transmuted.emit(droplight)
 	lantern_state = LanternState.UNLIT

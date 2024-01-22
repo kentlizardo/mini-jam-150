@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://b6ljkcmx8fr4m"]
+[gd_scene load_steps=17 format=3 uid="uid://b6ljkcmx8fr4m"]
 
 [ext_resource type="Script" path="res://scenes/game/enemies/goblin.gd" id="1_7cc5t"]
 [ext_resource type="Texture2D" uid="uid://c7lwkob07yj2s" path="res://assets/textures/enemies.png" id="2_eplln"]
@@ -40,13 +40,16 @@ animations = [{
 }]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ea3db"]
-radius = 1.0
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_w7fbm"]
 radius = 3.0
 
-[node name="Goblin" type="CharacterBody3D" node_paths=PackedStringArray("sprite")]
+[sub_resource type="SphereShape3D" id="SphereShape3D_p62j2"]
+radius = 1.0
+
+[node name="Goblin" type="CharacterBody3D" node_paths=PackedStringArray("melee", "sprite")]
 script = ExtResource("1_7cc5t")
+melee = NodePath("MeleeVision")
 sprite = NodePath("Sprite3D")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
@@ -76,6 +79,12 @@ script = ExtResource("3_nicwl")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="VisionBox"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("CylinderShape3D_w7fbm")
+
+[node name="MeleeVision" type="Area3D" parent="."]
+script = ExtResource("3_nicwl")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeleeVision"]
+shape = SubResource("SphereShape3D_p62j2")
 
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
 script = ExtResource("4_l03m5")

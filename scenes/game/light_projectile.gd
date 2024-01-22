@@ -10,15 +10,27 @@ const GRAVITATION_SPEED = 40.0
 
 var sender: Node3D
 var gravitate_towards: Node3D
-var health := 4
+var health := 4:
+	set(x):
+		health = x
+		if !is_node_ready():
+			await ready
+		normal_sprite.modulate.a = 0.25 * health
+		fast_sprite.modulate.a = 0.25 * health
 
 func damage(damage: int, damage_type: Global.DamageType, source: Node) -> void:
-	if source is Player:
+	if source == sender:
 		var move := Vector3(source.camera_forward.global_position - source.camera.global_position)
 		sender = source
 		apply_central_impulse(move.normalized() * HIT_SPEED * damage)
+	health -= 1
+	damage_check()
 	if source is LightProjectile:
 		push_error("Create stun")
+
+func damage_check() -> void:
+	if health <= 0:
+		queue_free()
 
 func _physics_process(delta: float) -> void:
 	if is_instance_valid(gravitate_towards):
