@@ -51,6 +51,7 @@ func damage(damage: int, damage_type: Global.DamageType, source: Node) -> void:
 	else:
 		health -= 1
 		damage_check()
+		Util.hit_marker(sprite)
 
 func damage_check() -> void:
 	if health <= 0:

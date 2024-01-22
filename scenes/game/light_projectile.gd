@@ -3,7 +3,7 @@ class_name LightProjectile extends RigidBody3D
 signal transmuted(next_light: Node3D)
 
 const HIT_SPEED = 60.0
-const GRAVITATION_SPEED = 40.0
+const GRAVITATION_SPEED = 45.0
 
 @export var normal_sprite: Sprite3D
 @export var fast_sprite: Sprite3D

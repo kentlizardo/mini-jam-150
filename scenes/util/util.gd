@@ -19,3 +19,10 @@ static func get_encompassing_groups_as_keys(node: Node) -> Dictionary:
 		if !data.has(key):
 			data[key] = parent_data[key]
 	return data
+
+static func hit_marker(sprite: SpriteBase3D) -> void:
+	var tw := sprite.create_tween()
+	for i in range(3):
+		tw.tween_property(sprite, "visible", false, 0.1)
+		tw.tween_property(sprite, "visible", true, 0.1)
+	print("hitmarker")

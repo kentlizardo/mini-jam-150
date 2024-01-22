@@ -88,4 +88,5 @@ func damage_check() -> void:
 func _on_shield_damaged(damage: int) -> void:
 	if state == ArmorState.VULNERABLE:
 		health -= damage
+		Util.hit_marker(sprite)
 		damage_check()

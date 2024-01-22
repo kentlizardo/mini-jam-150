@@ -106,6 +106,7 @@ func shoot() -> void:
 		var proj_temp := load("res://scenes/game/bird_light_projectile.tscn") as PackedScene
 		var proj := proj_temp.instantiate() as BirdLightProjectile
 		proj.sender = self
+		proj.max_health = 2
 		proj.health = 2
 		var move := Vector3(target.global_position - global_position)
 		get_parent().add_child(proj)
@@ -120,6 +121,7 @@ func damage(damage: int, damage_type: Global.DamageType, source: Node) -> void:
 	else:
 		health -= damage
 		damage_check()
+		Util.hit_marker(sprite)
 
 func damage_check() -> void:
 	if health <= 0:

@@ -26,14 +26,14 @@ col = NodePath("Area3D/CollisionShape3D")
 shape = SubResource("SphereShape3D_xv42d")
 
 [node name="Normal" type="Sprite3D" parent="."]
-pixel_size = 0.02
+pixel_size = 0.03
 billboard = 2
 texture_filter = 2
 texture = ExtResource("3_8dhkm")
 
 [node name="Fast" type="Sprite3D" parent="."]
 visible = false
-pixel_size = 0.02
+pixel_size = 0.03
 billboard = 2
 texture_filter = 2
 texture = ExtResource("4_4d6yo")
