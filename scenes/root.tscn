@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://dxus8oa1fjdgb"]
+[gd_scene load_steps=8 format=3 uid="uid://dxus8oa1fjdgb"]
 
 [ext_resource type="Script" path="res://scenes/root.gd" id="1_4jgp6"]
 [ext_resource type="Script" path="res://scenes/game/game.gd" id="2_hv5sa"]
 [ext_resource type="StyleBox" uid="uid://b6h87wscwvmhn" path="res://res/ui_box.tres" id="2_ylsjo"]
 [ext_resource type="Texture2D" uid="uid://cfi33eahtf7yf" path="res://assets/textures/left_0.png" id="3_p57pi"]
+[ext_resource type="Script" path="res://scenes/player_health_sprite.gd" id="4_k7ajw"]
 [ext_resource type="PackedScene" uid="uid://pqwhddnjm8an" path="res://scenes/game/player.tscn" id="5_kxbvh"]
 [ext_resource type="Script" path="res://scenes/game/map_generator.gd" id="6_8sy5e"]
 
@@ -38,12 +39,11 @@ offset_bottom = 90.0
 grow_vertical = 2
 theme_override_styles/panel = ExtResource("2_ylsjo")
 
-[node name="Text" type="TextureRect" parent="SubViewportContainer/SubViewport/LeftPanel"]
-visible = false
-layout_mode = 0
-offset_right = 8.0
-offset_bottom = 8.0
+[node name="PlayerHealth" type="Sprite2D" parent="SubViewportContainer/SubViewport/LeftPanel"]
 texture = ExtResource("3_p57pi")
+centered = false
+hframes = 5
+script = ExtResource("4_k7ajw")
 
 [node name="LeftPanel2" type="Panel" parent="SubViewportContainer/SubViewport"]
 custom_minimum_size = Vector2(60, 180)
@@ -77,13 +77,15 @@ script = ExtResource("2_hv5sa")
 
 [node name="MapRoot" type="Node3D" parent="SubViewportContainer/SubViewport/Game"]
 
-[node name="Player" parent="SubViewportContainer/SubViewport/Game" node_paths=PackedStringArray("camera", "camera_forward", "mace_anim_player", "light_anim_player", "walk_pivot") instance=ExtResource("5_kxbvh")]
+[node name="Player" parent="SubViewportContainer/SubViewport/Game" node_paths=PackedStringArray("camera", "camera_forward", "mace_anim_player", "light_anim_player", "walk_pivot", "personal_light_sprite", "fake_light") instance=ExtResource("5_kxbvh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 camera = NodePath("Pitch/Camera3D")
 camera_forward = NodePath("Pitch/Camera3D/Node3D")
 mace_anim_player = NodePath("MacePlayer")
 light_anim_player = NodePath("LightPlayer")
 walk_pivot = NodePath("Center/WalkPivot")
+personal_light_sprite = NodePath("Center/WalkPivot/Personalight")
+fake_light = NodePath("FakeLight")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="SubViewportContainer/SubViewport/Game"]
 transform = Transform3D(0.258819, -0.683013, 0.683013, 0, 0.707107, 0.707107, -0.965926, -0.183013, 0.183013, 0, 3, 0)

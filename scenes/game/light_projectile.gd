@@ -10,13 +10,14 @@ const GRAVITATION_SPEED = 40.0
 
 var sender: Node3D
 var gravitate_towards: Node3D
+var max_health := 4
 var health := 4:
 	set(x):
 		health = x
 		if !is_node_ready():
 			await ready
-		normal_sprite.modulate.a = 0.25 * health
-		fast_sprite.modulate.a = 0.25 * health
+		normal_sprite.modulate.a = float(health) / float(max_health)
+		fast_sprite.modulate.a = float(health) / float(max_health)
 
 func damage(damage: int, damage_type: Global.DamageType, source: Node) -> void:
 	if source is Player:

@@ -12,11 +12,15 @@ const SPEED = 5.0
 @export var walk_pivot : ShakeWeapon
 
 var able_to_slash : Array[Node3D] = []
-var health := 5
+var health : int:
+	set(x):
+		health = x
+		PlayerHealthSprite.current.frame = 5 - health
 
 func _init() -> void:
 	add_to_group("player")
 	current_player = self
+	health = 5
 
 static var current_player : Player
 func _ready() -> void:
@@ -25,6 +29,8 @@ func _ready() -> void:
 func damage(damage: int, damage_type: Global.DamageType, source: Node) -> void:
 	camera.add_trauma(35.0)
 	health -= 1
+	if health <= 0:
+		get_tree().change_scene_to_packed(load("res://scenes/root.tscn"))
 
 func _physics_process(delta: float) -> void:
 	# Get the input direction and handle the movement/deceleration.
@@ -109,7 +115,7 @@ var personal_light := false:
 		personal_light_sprite.position = Vector2.ZERO
 		personal_light_sprite.target_position = Vector2.ZERO
 		personal_light_sprite.visible = personal_light
-		fake_light.radius = 5.0 if personal_light else 3.0
+		fake_light.radius = 6.0 if personal_light else 3.0
 func start_light() -> void:
 	light_anim_player.stop()
 	light_anim_player.play("light_summon")
