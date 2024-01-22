@@ -130,7 +130,7 @@ _data = {
 "light_summon": ExtResource("3_6e8db")
 }
 
-[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("camera", "camera_forward", "mace_anim_player", "light_anim_player", "walk_pivot", "personal_light_sprite")]
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("camera", "camera_forward", "mace_anim_player", "light_anim_player", "walk_pivot", "personal_light_sprite", "fake_light")]
 axis_lock_linear_y = true
 motion_mode = 1
 script = ExtResource("1_igxis")
@@ -140,6 +140,7 @@ mace_anim_player = NodePath("MacePlayer")
 light_anim_player = NodePath("LightPlayer")
 walk_pivot = NodePath("Center/WalkPivot")
 personal_light_sprite = NodePath("Center/WalkPivot/Personalight")
+fake_light = NodePath("FakeLight")
 
 [node name="FakeLight" parent="." node_paths=PackedStringArray("col") instance=ExtResource("2_6r2ux")]
 radius = 3.0

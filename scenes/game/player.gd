@@ -109,7 +109,7 @@ var personal_light := false:
 		personal_light_sprite.position = Vector2.ZERO
 		personal_light_sprite.target_position = Vector2.ZERO
 		personal_light_sprite.visible = personal_light
-		fake_light.radius = 5 if personal_light else 3
+		fake_light.radius = 5.0 if personal_light else 3.0
 func start_light() -> void:
 	light_anim_player.stop()
 	light_anim_player.play("light_summon")
