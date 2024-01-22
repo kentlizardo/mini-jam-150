@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://dxus8oa1fjdgb"]
+[gd_scene load_steps=11 format=3 uid="uid://dxus8oa1fjdgb"]
 
 [ext_resource type="Script" path="res://scenes/root.gd" id="1_4jgp6"]
 [ext_resource type="Script" path="res://scenes/game/game.gd" id="2_hv5sa"]
@@ -7,10 +7,19 @@
 [ext_resource type="Script" path="res://scenes/player_health_sprite.gd" id="4_k7ajw"]
 [ext_resource type="PackedScene" uid="uid://pqwhddnjm8an" path="res://scenes/game/player.tscn" id="5_kxbvh"]
 [ext_resource type="Script" path="res://scenes/game/map_generator.gd" id="6_8sy5e"]
+[ext_resource type="FontFile" uid="uid://dcegjxuy0j37" path="res://assets/Silver.ttf" id="7_2clu3"]
+[ext_resource type="Script" path="res://scenes/vol_slider.gd" id="9_s5fc8"]
 
-[node name="Root" type="Node"]
+[sub_resource type="GDScript" id="GDScript_djkhj"]
+script/source = "class_name PauseMenu extends Control
+
+
+"
+
+[node name="Root" type="Node" node_paths=PackedStringArray("pause_menu")]
 process_mode = 3
 script = ExtResource("1_4jgp6")
+pause_menu = NodePath("PauseMenu")
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="."]
 texture_filter = 3
@@ -79,13 +88,18 @@ script = ExtResource("2_hv5sa")
 
 [node name="MapRoot" type="Node3D" parent="SubViewportContainer/SubViewport/Game"]
 
-[node name="Player" parent="SubViewportContainer/SubViewport/Game" node_paths=PackedStringArray("camera", "camera_forward", "mace_anim_player", "light_anim_player", "walk_pivot", "personal_light_sprite", "fake_light") instance=ExtResource("5_kxbvh")]
+[node name="Player" parent="SubViewportContainer/SubViewport/Game" node_paths=PackedStringArray("camera", "camera_forward", "mace_anim_player", "light_anim_player", "walk_pivot", "mace_sounds", "gore_sounds", "dispel_sound", "recall_sound", "volley_sounds", "personal_light_sprite", "fake_light") instance=ExtResource("5_kxbvh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 camera = NodePath("Pitch/Camera3D")
 camera_forward = NodePath("Pitch/Camera3D/Node3D")
 mace_anim_player = NodePath("MacePlayer")
 light_anim_player = NodePath("LightPlayer")
 walk_pivot = NodePath("Center/WalkPivot")
+mace_sounds = [NodePath("Pitch/Camera3D/Mace1"), NodePath("Pitch/Camera3D/Mace2")]
+gore_sounds = [NodePath("Pitch/Gore"), NodePath("Pitch/Gore2"), NodePath("Pitch/Gore3"), NodePath("Pitch/Gore4")]
+dispel_sound = NodePath("Pitch/Dispel")
+recall_sound = NodePath("Pitch/Recall")
+volley_sounds = [NodePath("Pitch/Volley"), NodePath("Pitch/Volley2")]
 personal_light_sprite = NodePath("Center/WalkPivot/Personalight")
 fake_light = NodePath("FakeLight")
 
@@ -94,3 +108,78 @@ transform = Transform3D(0.258819, -0.683013, 0.683013, 0, 0.707107, 0.707107, -0
 visible = false
 
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
+
+[node name="PauseMenu" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = SubResource("GDScript_djkhj")
+
+[node name="ColorRect" type="ColorRect" parent="PauseMenu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.501961)
+
+[node name="RichTextLabel" type="RichTextLabel" parent="PauseMenu"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/normal_font = ExtResource("7_2clu3")
+theme_override_font_sizes/normal_font_size = 72
+text = "Paused..."
+fit_content = true
+autowrap_mode = 0
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="PauseMenu"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -69.0
+offset_top = -81.0
+offset_right = 69.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_fonts/normal_font = ExtResource("7_2clu3")
+theme_override_font_sizes/normal_font_size = 72
+text = "Volume
+
+"
+fit_content = true
+autowrap_mode = 0
+
+[node name="VSlider" type="HSlider" parent="PauseMenu"]
+custom_minimum_size = Vector2(200, 120)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -100.0
+offset_top = -60.0
+offset_right = 100.0
+grow_horizontal = 2
+grow_vertical = 0
+script = ExtResource("9_s5fc8")
+
+[connection signal="value_changed" from="PauseMenu/VSlider" to="PauseMenu/VSlider" method="_on_value_changed"]

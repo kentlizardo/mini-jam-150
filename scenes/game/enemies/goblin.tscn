@@ -90,8 +90,9 @@ shape = SubResource("SphereShape3D_p62j2")
 script = ExtResource("4_l03m5")
 initial_state = NodePath("Search")
 
-[node name="Search" type="Node" parent="StateMachine"]
+[node name="Search" type="Node" parent="StateMachine" node_paths=PackedStringArray("vis")]
 script = ExtResource("7_655xo")
+vis = NodePath("../../VisionBox")
 
 [node name="Hit" type="Node" parent="StateMachine"]
 script = ExtResource("8_u0xr3")
