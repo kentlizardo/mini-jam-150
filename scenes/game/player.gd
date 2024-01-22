@@ -16,10 +16,12 @@ var able_to_slash : Array[Node3D] = []
 func _init() -> void:
 	add_to_group("player")
 
+static var current_player : Player
 func _ready() -> void:
 	_capture_mouse()
+	current_player = self
 
-func damage(damage: int, damage_type: Global.DamageType, sender: Node) -> void:
+func damage(damage: int, damage_type: Global.DamageType, source: Node) -> void:
 	print("Player damaged")
 	camera.add_trauma(5.0)
 
@@ -95,11 +97,13 @@ func release_light() -> void:
 	if charged:
 		charged = false
 		light_proj = LIGHT_PROJECTILE_TEMPLATE.instantiate() as LightProjectile
-		light_proj.add_to_group("player")
+		light_proj.sender = self
 		get_parent().add_child(light_proj)
 		light_proj.global_position = camera_forward.global_position
 		light_proj.linear_velocity = get_real_velocity()
 func start_recall() -> void:
+	if light_proj is Lantern:
+		light_proj.recall()
 	if light_proj is LightProjectile:
 		light_proj.gravitate_towards = self
 func stop_recall() -> void:
@@ -108,7 +112,6 @@ func stop_recall() -> void:
 func absorb_light(light: LightProjectile) -> void:
 	if light_proj == light and light.gravitate_towards == self:
 		light_proj = null
-		light.queue_free()
 func dispel_light() -> void:
 	if is_instance_valid(light_proj):
 		if light_proj.has_method("dispel_light"):

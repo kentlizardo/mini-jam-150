@@ -8,13 +8,15 @@ const GRAVITATION_SPEED = 40.0
 @export var normal_sprite: Sprite3D
 @export var fast_sprite: Sprite3D
 
+var sender: Node3D
 var gravitate_towards: Node3D
+var health := 4
 
-func damage(damage: int, damage_type: Global.DamageType, sender: Node) -> void:
-	if sender is Player:
-		var move := Vector3(sender.camera_forward.global_position - sender.camera.global_position)
+func damage(damage: int, damage_type: Global.DamageType, source: Node) -> void:
+	if source is Player:
+		var move := Vector3(source.camera_forward.global_position - source.camera.global_position)
 		apply_central_impulse(move.normalized() * HIT_SPEED * damage)
-	if sender is LightProjectile:
+	if source is LightProjectile:
 		push_error("Create stun")
 
 func _physics_process(delta: float) -> void:

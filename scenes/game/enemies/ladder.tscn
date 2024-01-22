@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://btvnciki08eji"]
+[gd_scene load_steps=8 format=3 uid="uid://btvnciki08eji"]
 
 [ext_resource type="Texture2D" uid="uid://c7lwkob07yj2s" path="res://assets/textures/enemies.png" id="1_7gvao"]
 [ext_resource type="Script" path="res://scenes/game/enemies/ladder.gd" id="1_t2bot"]
+[ext_resource type="PackedScene" uid="uid://lbq5c8nv4jns" path="res://scenes/game/fake_light.tscn" id="3_mlqqu"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_lvnqx"]
 atlas = ExtResource("1_7gvao")
@@ -41,3 +42,7 @@ shape = SubResource("CylinderShape3D_61aml")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="AnimatedSprite3D/StaticBody3D"]
 shape = SubResource("CylinderShape3D_kt48w")
+
+[node name="FakeLight" parent="." node_paths=PackedStringArray("col") instance=ExtResource("3_mlqqu")]
+radius = 4.0
+col = NodePath("Area3D/CollisionShape3D")

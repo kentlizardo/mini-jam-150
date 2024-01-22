@@ -1,12 +1,13 @@
 extends Control
 
-const INITIAL_ROOM_SIZE := Rect2i(-24, -80, 48, 160)
-const MONSTERS_PER_ROOM := Vector2i(1, 2)
+const INITIAL_ROOM_SIZE := Rect2i(-12, -40, 24, 80)
+const MONSTERS_PER_ROOM := Vector2i(2, 4)
 var MONSTER_TABLE := [
-	load("res://scenes/game/enemies/goblin.tscn"),
-	load("res://scenes/game/enemies/armor.tscn"),
-	load("res://scenes/game/enemies/lantern.tscn"),
+	#load("res://scenes/game/enemies/goblin.tscn"),
+	#load("res://scenes/game/enemies/armor.tscn"),
+	load("res://scenes/game/enemies/lighteater.tscn"),
 ]
+var LANTERN := load("res://scenes/game/enemies/lantern.tscn")
 
 const tile_size := 1
 
@@ -15,11 +16,12 @@ const tile_size := 1
 var root_node: BSP_Node
 var paths: Array[Dictionary] = []
 var tiles := {} # tile_pos -> Node3D
+var tile_entities := {} # tile_pos -> Node3D
 var player_marker := Vector2.ZERO
 
 func _ready() -> void:
 	root_node = BSP_Node.new(INITIAL_ROOM_SIZE)
-	root_node.split(5, paths)
+	root_node.split(4, paths)
 	queue_redraw()
 	build()
 
@@ -36,8 +38,8 @@ func _draw() -> void:
 
 const WALL := preload("res://scenes/game/map/tile_wall.tscn")
 const FLOOR := preload("res://scenes/game/map/tile_floor.tscn")
-const MIN_PADDING := 2
-const MAX_PADDING := 3
+const MIN_PADDING := 1
+const MAX_PADDING := 2
 
 func check_padding(pos: Vector2i, padding: Vector4i, leaf: BSP_Node) -> bool:
 	return pos.x <= padding.x or pos.y <= padding.y or pos.x > leaf.bounds.size.x - padding.w or pos.y > leaf.bounds.size.y - padding.z
@@ -55,6 +57,7 @@ func set_tile(tile_pos: Vector2i, scene: PackedScene) -> void:
 
 func add_entity(tile_pos: Vector2i, scene: PackedScene) -> void:
 	var ent := scene.instantiate() as Node3D
+	tile_entities[tile_pos] = ent
 	map_root.add_child(ent)
 	ent.position.x = tile_pos.x * 2
 	ent.position.z = tile_pos.y * 2
@@ -73,7 +76,7 @@ func build() -> void:
 			rng.randi_range(MIN_PADDING,MAX_PADDING),
 			rng.randi_range(MIN_PADDING,MAX_PADDING),
 		)
-		var unoccupied: Array[Vector2i] = []
+		leaf.data["unoccupied"] = [] as Array[Vector2i]
 		for y in range(leaf.bounds.size.y):
 			for x in range(leaf.bounds.size.x):
 				var tile_pos := leaf.bounds.position + Vector2i(x,y)
@@ -81,12 +84,17 @@ func build() -> void:
 					set_tile(tile_pos, WALL)
 				else:
 					set_tile(tile_pos, FLOOR)
-					unoccupied.append(tile_pos)
+					leaf.data["unoccupied"].append(tile_pos)
 		for i in range(0, randi_range(MONSTERS_PER_ROOM.x, MONSTERS_PER_ROOM.y)):
-			if unoccupied.size() > 0:
-				var space := unoccupied.pick_random() as Vector2i
+			if leaf.data["unoccupied"].size() > 0:
+				var space := leaf.data["unoccupied"].pick_random() as Vector2i
 				add_entity(space, MONSTER_TABLE.pick_random())
-				unoccupied.remove_at(unoccupied.find(space))
+				leaf.data["unoccupied"].remove_at(leaf.data["unoccupied"].find(space))
+		for i in range(randi_range(0, 4)):
+			if leaf.data["unoccupied"].size() > 0:
+				var space := leaf.data["unoccupied"].pick_random() as Vector2i
+				add_entity(space, LANTERN)
+				leaf.data["unoccupied"].remove_at(leaf.data["unoccupied"].find(space))
 	for path: Dictionary in paths:
 		if path["left"].y == path["right"].y:
 			for i in range(path["right"].x - path["left"].x):
@@ -102,13 +110,13 @@ func build() -> void:
 		for x in range(root_node.bounds.size.x):
 			var tile_pos := Vector2i(root_node.bounds.position.x + x, root_node.bounds.position.y + y)
 			if tiles.has(tile_pos):
-				if tiles[tile_pos] is TileFloor:
+				if tiles[tile_pos] is TileFloor and !tile_entities.keys().has(tile_pos):
 					ladder_spawns.push_back(tile_pos)
 	for y in range(5):
 		for x in range(root_node.bounds.size.x):
 			var tile_pos := Vector2i(root_node.bounds.position.x + x, root_node.bounds.position.y + root_node.bounds.size.y - y)
 			if tiles.has(tile_pos):
-				if tiles[tile_pos] is TileFloor:
+				if tiles[tile_pos] is TileFloor and !tile_entities.keys().has(tile_pos):
 					player_spawns.push_back(tile_pos)
 	await get_tree().process_frame
 	var p_spawn := player_spawns.pick_random() as Vector2i
@@ -118,6 +126,9 @@ func build() -> void:
 	player.position.y = 1
 	var l_spawn := ladder_spawns.pick_random() as Vector2i
 	add_entity(l_spawn, load("res://scenes/game/enemies/ladder.tscn"))
+	for i: Node3D in tile_entities.values():
+		if i.global_position.distance_to(player.global_position) <= 10:
+			i.queue_free()
 
 # References:
 #https://jonoshields.com/post/bsp-dungeon
@@ -125,6 +136,8 @@ class BSP_Node extends RefCounted:
 	var left_child: BSP_Node
 	var right_child: BSP_Node
 	var bounds: Rect2i
+	
+	var data : Dictionary = {}
 	func _init(bounds: Rect2i) -> void:
 		self.bounds = bounds
 	func get_leaves() -> Array[BSP_Node]:

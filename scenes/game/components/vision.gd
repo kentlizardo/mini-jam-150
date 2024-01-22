@@ -1,4 +1,4 @@
-extends Area3D
+class_name Vision extends Area3D
 
 var seen : Array[Node3D] = []
 

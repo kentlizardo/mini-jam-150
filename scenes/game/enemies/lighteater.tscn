@@ -1,0 +1,106 @@
+[gd_scene load_steps=14 format=3 uid="uid://ck7tmn70i8um7"]
+
+[ext_resource type="Texture2D" uid="uid://c7lwkob07yj2s" path="res://assets/textures/enemies.png" id="1_asod6"]
+[ext_resource type="Script" path="res://scenes/game/enemies/lighteater.gd" id="1_e3tyx"]
+[ext_resource type="Script" path="res://scenes/game/components/vision.gd" id="3_fvuqv"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_xree5"]
+radius = 0.8
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_65p85"]
+atlas = ExtResource("1_asod6")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3lpyw"]
+atlas = ExtResource("1_asod6")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m6213"]
+atlas = ExtResource("1_asod6")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rdd7r"]
+atlas = ExtResource("1_asod6")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7gucq"]
+atlas = ExtResource("1_asod6")
+region = Rect2(32, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qtk7a"]
+atlas = ExtResource("1_asod6")
+region = Rect2(32, 64, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ngyxw"]
+atlas = ExtResource("1_asod6")
+region = Rect2(32, 96, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_qj6ot"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_65p85")
+}, {
+"duration": 2.0,
+"texture": SubResource("AtlasTexture_3lpyw")
+}],
+"loop": false,
+"name": &"absorb",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m6213")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rdd7r")
+}],
+"loop": true,
+"name": &"search",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 3.0,
+"texture": SubResource("AtlasTexture_7gucq")
+}, {
+"duration": 5.0,
+"texture": SubResource("AtlasTexture_qtk7a")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ngyxw")
+}],
+"loop": false,
+"name": &"shoot",
+"speed": 5.0
+}]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_j7oas"]
+radius = 7.0
+
+[node name="Lighteater" type="CharacterBody3D" node_paths=PackedStringArray("sprite", "vision")]
+script = ExtResource("1_e3tyx")
+sprite = NodePath("AnimatedSprite3D")
+vision = NodePath("Area3D")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CylinderShape3D_xree5")
+
+[node name="AnimatedSprite3D" type="AnimatedSprite3D" parent="."]
+pixel_size = 0.05
+billboard = 2
+texture_filter = 2
+sprite_frames = SubResource("SpriteFrames_qj6ot")
+animation = &"absorb"
+frame = 1
+frame_progress = 1.0
+
+[node name="Area3D" type="Area3D" parent="."]
+script = ExtResource("3_fvuqv")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("SphereShape3D_j7oas")

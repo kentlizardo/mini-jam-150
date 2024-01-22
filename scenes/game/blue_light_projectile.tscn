@@ -7,14 +7,17 @@
 [ext_resource type="Texture2D" uid="uid://cl8f8cctcbidj" path="res://assets/textures/light_blue_fast.png" id="4_4d6yo"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_xv42d"]
-radius = 0.4
+radius = 0.2
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_hlffu"]
+radius = 0.3
 
-[node name="Node3D" type="RigidBody3D"]
+[node name="Node3D" type="RigidBody3D" node_paths=PackedStringArray("normal_sprite", "fast_sprite")]
 axis_lock_linear_y = true
 linear_damp = 6.0
 script = ExtResource("1_kksyh")
+normal_sprite = NodePath("Normal")
+fast_sprite = NodePath("Fast")
 
 [node name="FakeLight" parent="." node_paths=PackedStringArray("col") instance=ExtResource("2_1yiuc")]
 col = NodePath("Area3D/CollisionShape3D")

@@ -1,4 +1,4 @@
-extends StaticBody3D
+class_name Lantern extends StaticBody3D
 
 var FAKE_LIGHT := load("res://scenes/game/fake_light.tscn") as PackedScene
 var PROJ_LIGHT := load("res://scenes/game/light_projectile.tscn") as PackedScene
@@ -11,7 +11,6 @@ enum LanternState {
 	LIT,
 	BLUE,
 }
-
 
 @export var sprite : AnimatedSprite3D
 
@@ -34,14 +33,17 @@ var lantern_state := LanternState.UNLIT:
 var light : FakeLight
 var health := 3
 
-func damage(damage: int, damage_type: Global.DamageType, sender: Node) -> void:
+func damage(damage: int, damage_type: Global.DamageType, source: Node) -> void:
 	if damage_type == Global.DamageType.MAGIC:
-		if sender.is_in_group("player") and sender is LightProjectile:
-			lantern_state = LanternState.LIT
-			sender.transmuted.emit(self)
+		if source is LightProjectile:
+			if source.sender is Player:
+				lantern_state = LanternState.LIT
+				source.transmuted.emit(self)
+			else:
+				lantern_state = LanternState.BLUE
 		else:
 			lantern_state = LanternState.BLUE
-		sender.queue_free()
+		source.queue_free()
 	else:
 		health -= 1
 		damage_check()
@@ -55,7 +57,7 @@ func damage_check() -> void:
 				droplight.global_position = global_position
 				transmuted.emit(droplight)
 			LanternState.BLUE:
-				droplight := PROJ_BLUELIGHT.instantiate()
+				var droplight := PROJ_BLUELIGHT.instantiate()
 				get_parent().add_child(droplight)
 				droplight.global_position = global_position
 		queue_free()
@@ -63,3 +65,12 @@ func damage_check() -> void:
 func dispel_light() -> void:
 	if lantern_state == LanternState.LIT:
 		lantern_state = LanternState.UNLIT
+
+func recall() -> void:
+	var droplight := PROJ_LIGHT.instantiate()
+	get_parent().add_child(droplight)
+	var r : Vector3 = Player.current_player.global_position - global_position
+	droplight.global_position = global_position + r.normalized() * 1.0
+	droplight.add_to_group("player")
+	transmuted.emit(droplight)
+	lantern_state = LanternState.UNLIT

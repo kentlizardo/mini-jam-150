@@ -1,10 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://0vkvf4usabme"]
+[gd_scene load_steps=8 format=3 uid="uid://dweixbwcgqqsd"]
 
-[ext_resource type="Script" path="res://scenes/game/light_projectile.gd" id="1_x0w22"]
-[ext_resource type="Texture2D" uid="uid://hs1ak8761dgy" path="res://assets/textures/light.png" id="2_7tfc6"]
-[ext_resource type="Script" path="res://scenes/game/light_projectile_hitter.gd" id="3_fhpnw"]
-[ext_resource type="Texture2D" uid="uid://dfsbyr4mwox2k" path="res://assets/textures/light_fast.png" id="4_r1fj0"]
-[ext_resource type="PackedScene" uid="uid://lbq5c8nv4jns" path="res://scenes/game/fake_light.tscn" id="4_wd4l8"]
+[ext_resource type="Script" path="res://scenes/game/bird_light_projectile.gd" id="1_rkrb7"]
+[ext_resource type="PackedScene" uid="uid://lbq5c8nv4jns" path="res://scenes/game/fake_light.tscn" id="2_xb4jc"]
+[ext_resource type="Texture2D" uid="uid://d3nnoajhafncr" path="res://assets/textures/bird_light.png" id="3_4cqka"]
+[ext_resource type="Texture2D" uid="uid://brpb44ps5loch" path="res://assets/textures/bird_light_fast.png" id="4_r3p4k"]
+[ext_resource type="Script" path="res://scenes/game/light_projectile_hitter.gd" id="5_ysj2t"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_xv42d"]
 radius = 0.2
@@ -15,30 +15,31 @@ radius = 0.3
 [node name="Node3D" type="RigidBody3D" node_paths=PackedStringArray("normal_sprite", "fast_sprite")]
 axis_lock_linear_y = true
 linear_damp = 6.0
-script = ExtResource("1_x0w22")
-normal_sprite = NodePath("Sprite3D")
+script = ExtResource("1_rkrb7")
+normal_sprite = NodePath("Normal")
 fast_sprite = NodePath("Fast")
 
-[node name="FakeLight" parent="." node_paths=PackedStringArray("col") instance=ExtResource("4_wd4l8")]
+[node name="FakeLight" parent="." node_paths=PackedStringArray("col") instance=ExtResource("2_xb4jc")]
 col = NodePath("Area3D/CollisionShape3D")
 
 [node name="Node3D" type="CollisionShape3D" parent="."]
 shape = SubResource("SphereShape3D_xv42d")
 
-[node name="Sprite3D" type="Sprite3D" parent="."]
+[node name="Normal" type="Sprite3D" parent="."]
 pixel_size = 0.02
 billboard = 2
 texture_filter = 2
-texture = ExtResource("2_7tfc6")
+texture = ExtResource("3_4cqka")
 
 [node name="Fast" type="Sprite3D" parent="."]
+visible = false
 pixel_size = 0.02
 billboard = 2
 texture_filter = 2
-texture = ExtResource("4_r1fj0")
+texture = ExtResource("4_r3p4k")
 
 [node name="Hitter" type="Area3D" parent="." node_paths=PackedStringArray("light_proj")]
-script = ExtResource("3_fhpnw")
+script = ExtResource("5_ysj2t")
 light_proj = NodePath("..")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Hitter"]
