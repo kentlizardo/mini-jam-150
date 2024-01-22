@@ -15,6 +15,7 @@ const SPEED = 5.0
 @export var gore_sounds : Array[AudioStreamPlayer3D]
 @export var dispel_sound : AudioStreamPlayer3D
 @export var recall_sound : AudioStreamPlayer3D
+@export var volley_sounds : Array[AudioStreamPlayer3D]
 
 var able_to_slash : Array[Node3D] = []
 var health : int:
@@ -180,6 +181,7 @@ func _attack(damage: int) -> void:
 			walk_pivot.add_trauma(50.0 * damage)
 			camera.add_trauma(25.0 * damage)
 			Game.current.short_pause(0.1 * damage)
+			volley_sounds.pick_random().play()
 			return
 	var slashing : Node
 	var dist := -1

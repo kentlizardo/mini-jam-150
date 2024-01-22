@@ -13,8 +13,8 @@ func _on_area_3d_body_entered(body: Node3D) -> void:
 func _hit_check(node: Node3D) -> void:
 	if node == light_proj.gravitate_towards:
 		if node is Player:
-			node.absorb_light(light_proj)
 			Util.preserve_and_oneshot_sound(absorb_sound)
+			node.absorb_light(light_proj)
 			light_proj.queue_free()
 	if node == self or node is LightProjectile:
 		return

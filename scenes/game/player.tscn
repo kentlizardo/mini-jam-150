@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://pqwhddnjm8an"]
+[gd_scene load_steps=27 format=3 uid="uid://pqwhddnjm8an"]
 
 [ext_resource type="Script" path="res://scenes/game/player.gd" id="1_igxis"]
 [ext_resource type="Script" path="res://scenes/game/shake_camera.gd" id="2_0rjhe"]
@@ -16,6 +16,8 @@
 [ext_resource type="AudioStream" uid="uid://tl27kct5nq0g" path="res://assets/audio/gore-4.mp3" id="9_ri00g"]
 [ext_resource type="AudioStream" uid="uid://y5qj8aq047is" path="res://assets/audio/dispel-1.mp3" id="10_h1qy4"]
 [ext_resource type="AudioStream" uid="uid://d24x4w86eqrfo" path="res://assets/audio/recall.mp3" id="11_5g38a"]
+[ext_resource type="AudioStream" uid="uid://dkeejytkleb0o" path="res://assets/audio/volley-1.mp3" id="12_kogc7"]
+[ext_resource type="AudioStream" uid="uid://cx3spsm1dhxgf" path="res://assets/audio/volley-2.mp3" id="13_u680j"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_nwppc"]
 
@@ -138,7 +140,7 @@ _data = {
 "light_summon": ExtResource("3_6e8db")
 }
 
-[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("camera", "camera_forward", "mace_anim_player", "light_anim_player", "walk_pivot", "mace_sounds", "gore_sounds", "dispel_sound", "recall_sound", "personal_light_sprite", "fake_light")]
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("camera", "camera_forward", "mace_anim_player", "light_anim_player", "walk_pivot", "mace_sounds", "gore_sounds", "dispel_sound", "recall_sound", "volley_sounds", "personal_light_sprite", "fake_light")]
 axis_lock_linear_y = true
 motion_mode = 1
 script = ExtResource("1_igxis")
@@ -151,6 +153,7 @@ mace_sounds = [NodePath("Pitch/Camera3D/Mace1"), NodePath("Pitch/Camera3D/Mace2"
 gore_sounds = [NodePath("Pitch/Gore"), NodePath("Pitch/Gore2"), NodePath("Pitch/Gore3"), NodePath("Pitch/Gore4")]
 dispel_sound = NodePath("Pitch/Dispel")
 recall_sound = NodePath("Pitch/Recall")
+volley_sounds = [NodePath("Pitch/Volley"), NodePath("Pitch/Volley2")]
 personal_light_sprite = NodePath("Center/WalkPivot/Personalight")
 fake_light = NodePath("FakeLight")
 
@@ -211,6 +214,14 @@ volume_db = -8.0
 
 [node name="Recall" type="AudioStreamPlayer3D" parent="Pitch"]
 stream = ExtResource("11_5g38a")
+volume_db = -12.0
+
+[node name="Volley" type="AudioStreamPlayer3D" parent="Pitch"]
+stream = ExtResource("12_kogc7")
+volume_db = -3.0
+
+[node name="Volley2" type="AudioStreamPlayer3D" parent="Pitch"]
+stream = ExtResource("13_u680j")
 volume_db = -12.0
 
 [node name="MacePlayer" type="AnimationPlayer" parent="."]

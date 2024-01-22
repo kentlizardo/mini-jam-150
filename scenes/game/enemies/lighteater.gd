@@ -89,8 +89,12 @@ func _process(delta: float) -> void:
 				melee_timer += delta
 				if melee_timer >= melee_cooldown:
 					for obj: Node3D in melee.seen:
-						if obj is Lantern:
-							if obj.lantern_state != Lantern.LanternState.UNLIT:
+						if obj != self:
+							if obj is Lantern:
+								if obj.lantern_state != Lantern.LanternState.UNLIT:
+									if obj.has_method("damage"):
+										obj.damage(1, Global.DamageType.PHYSICAL, self)
+							else:
 								if obj.has_method("damage"):
 									obj.damage(1, Global.DamageType.PHYSICAL, self)
 					melee_timer = 0.0
@@ -115,6 +119,7 @@ func shoot() -> void:
 		get_parent().add_child(proj)
 		proj.global_position = global_position + move.normalized() * 1.0
 		proj.apply_central_impulse(move.normalized() * BirdLightProjectile.HIT_SPEED)
+		print("shooting")
 
 func damage(damage: int, damage_type: Global.DamageType, source: Node) -> void:
 	if damage_type == Global.DamageType.MAGIC:

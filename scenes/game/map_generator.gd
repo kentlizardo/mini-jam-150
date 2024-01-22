@@ -3,8 +3,8 @@ extends Control
 const INITIAL_ROOM_SIZE := Rect2i(-12, -40, 24, 80)
 const MONSTERS_PER_ROOM := Vector2i(2, 4)
 var MONSTER_TABLE := [
-	load("res://scenes/game/enemies/goblin.tscn"),
-	load("res://scenes/game/enemies/armor.tscn"),
+	#load("res://scenes/game/enemies/goblin.tscn"),
+	#load("res://scenes/game/enemies/armor.tscn"),
 	load("res://scenes/game/enemies/lighteater.tscn"),
 ]
 var LANTERN := load("res://scenes/game/enemies/lantern.tscn")

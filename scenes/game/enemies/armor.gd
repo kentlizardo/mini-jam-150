@@ -67,7 +67,7 @@ func _process(delta: float) -> void:
 				melee_timer += delta
 				if melee_timer >= melee_cooldown:
 					for obj: Node3D in melee.seen:
-						if is_ancestor_of(obj):
+						if is_ancestor_of(obj) or obj == self:
 							continue
 						if obj.has_method("damage"):
 							obj.damage(1, Global.DamageType.PHYSICAL, self)

@@ -25,7 +25,6 @@ static func hit_marker(sprite: SpriteBase3D) -> void:
 	for i in range(3):
 		tw.tween_property(sprite, "visible", false, 0.1)
 		tw.tween_property(sprite, "visible", true, 0.1)
-	print("hitmarker")
 
 static func preserve_and_oneshot_sound(player: AudioStreamPlayer3D) -> void:
 	player.reparent(Root.current)

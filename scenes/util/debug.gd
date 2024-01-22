@@ -15,6 +15,8 @@ static func res_info(res: Resource) -> String:
 	return obj_info(res)
 
 static func abstr_func(obj: Object) -> void:
+	if OS.has_feature("release"):
+		return
 	var stack := get_stack()
 	var last_call : Dictionary = stack[1]
 	var func_name := last_call["function"] as String

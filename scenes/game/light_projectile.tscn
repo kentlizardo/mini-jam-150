@@ -63,7 +63,7 @@ stream = ExtResource("8_xalfc")
 
 [node name="Volley2" type="AudioStreamPlayer3D" parent="."]
 stream = ExtResource("9_mjgjh")
-volume_db = -16.0
+volume_db = -12.0
 
 [node name="Damage" type="AudioStreamPlayer3D" parent="."]
 stream = ExtResource("9_mjgjh")
