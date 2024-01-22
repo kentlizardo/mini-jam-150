@@ -7,7 +7,7 @@ func _enter() -> void:
 func _exit() -> void:
 	pass
 
-const SPEED = 1
+const SPEED = 2.0
 func _physics_process(delta: float) -> void:
 	var gob := entity_holder as Goblin
 	if gob:

@@ -21,7 +21,8 @@ var able_to_slash : Array[Node3D] = []
 var health : int:
 	set(x):
 		health = x
-		PlayerHealthSprite.current.frame = 5 - health
+		if PlayerHealthSprite.current.vframes * PlayerHealthSprite.current.hframes > 5 - health:
+			PlayerHealthSprite.current.frame = 5 - health
 
 func _init() -> void:
 	add_to_group("player")
@@ -37,7 +38,7 @@ func damage(damage: int, damage_type: Global.DamageType, source: Node) -> void:
 	camera.add_trauma(35.0)
 	health -= 1
 	if health <= 0:
-		get_tree().change_scene_to_packed(load("res://scenes/root.tscn"))
+		get_tree().call_deferred("change_scene_to_packed", load("res://scenes/root.tscn"))
 
 func _physics_process(delta: float) -> void:
 	# Get the input direction and handle the movement/deceleration.
@@ -51,6 +52,9 @@ func _physics_process(delta: float) -> void:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 		velocity.z = move_toward(velocity.z, 0, SPEED)
 	move_and_slide()
+
+#func _process(delta: float) -> void:
+	#fake_light.radius = move_toward(fake_light.radius, fake_light_target_radius, delta)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if Input.is_action_just_pressed("ui_cancel"):
@@ -116,6 +120,9 @@ func _on_transmute(next_light: Node3D) -> void:
 
 @export var personal_light_sprite : PersonalLightSprite
 @export var fake_light : FakeLight
+#var fake_light_target_radius := 3.0:
+	#set(x):
+		#fake_light_target_radius = x
 var personal_light := false:
 	set(x):
 		personal_light = x
@@ -123,6 +130,7 @@ var personal_light := false:
 		personal_light_sprite.target_position = Vector2.ZERO
 		personal_light_sprite.visible = personal_light
 		fake_light.radius = 6.0 if personal_light else 3.0
+		#fake_light_target_radius = 6.0 if personal_light else 3.0
 func start_light() -> void:
 	light_anim_player.stop()
 	light_anim_player.play("light_summon")
