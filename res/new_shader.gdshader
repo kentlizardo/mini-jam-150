@@ -7,11 +7,8 @@ uniform float height;
 uniform vec3 spheres[128];
 uniform uint sphere_count;
 
-uniform vec3 sphere_position;
 uniform sampler2D tex1 : filter_nearest_mipmap;
 uniform sampler2D tex2 : filter_nearest_mipmap;
-uniform float radius;
-uniform float edge;
 
 const float inf = 1.0 / 0.0;
 
