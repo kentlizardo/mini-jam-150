@@ -163,8 +163,9 @@ func build() -> void:
 	map_root.add_child(ladder)
 	ladder.global_position = tile_pos_to_global_pos(l_spawn)
 	for i: Node3D in tile_entities.values():
-		if i.global_position.distance_to(player.global_position) <= 20:
-			i.queue_free()
+		if !(i is Lantern):
+			if i.global_position.distance_to(player.global_position) <= 20:
+				i.queue_free()
 
 # References:
 #https://jonoshields.com/post/bsp-dungeon
