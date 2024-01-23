@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://dxus8oa1fjdgb"]
+[gd_scene load_steps=12 format=3 uid="uid://dxus8oa1fjdgb"]
 
 [ext_resource type="Script" path="res://scenes/root.gd" id="1_4jgp6"]
 [ext_resource type="Script" path="res://scenes/game/game.gd" id="2_hv5sa"]
@@ -10,8 +10,6 @@
 [ext_resource type="FontFile" uid="uid://dcegjxuy0j37" path="res://assets/Silver.ttf" id="7_2clu3"]
 [ext_resource type="MeshLibrary" uid="uid://d4b6syghd4fry" path="res://res/mesh_lib.tres" id="7_re1pr"]
 [ext_resource type="Script" path="res://scenes/vol_slider.gd" id="9_s5fc8"]
-
-[sub_resource type="MultiMesh" id="MultiMesh_d243f"]
 
 [sub_resource type="GDScript" id="GDScript_djkhj"]
 script/source = "class_name PauseMenu extends Control
@@ -73,7 +71,7 @@ grow_horizontal = 0
 grow_vertical = 2
 theme_override_styles/panel = ExtResource("2_ylsjo")
 
-[node name="Map" type="Control" parent="SubViewportContainer/SubViewport/LeftPanel2" node_paths=PackedStringArray("grid_map")]
+[node name="Map" type="Control" parent="SubViewportContainer/SubViewport/LeftPanel2" node_paths=PackedStringArray("grid_map", "map_root", "player")]
 custom_minimum_size = Vector2(24, 80)
 layout_mode = 1
 anchors_preset = 15
@@ -84,19 +82,23 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("6_8sy5e")
 grid_map = NodePath("../../Game/MapRoot/GridMap")
+map_root = NodePath("../../Game/MapRoot")
+player = NodePath("../../Game/Player")
 
 [node name="Game" type="Node" parent="SubViewportContainer/SubViewport"]
 process_mode = 1
 script = ExtResource("2_hv5sa")
 
 [node name="MapRoot" type="Node3D" parent="SubViewportContainer/SubViewport/Game"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
 
 [node name="GridMap" type="GridMap" parent="SubViewportContainer/SubViewport/Game/MapRoot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 0)
 mesh_library = ExtResource("7_re1pr")
+data = {
+"cells": PackedInt32Array(0, 0, 0)
+}
 
 [node name="Player" parent="SubViewportContainer/SubViewport/Game" node_paths=PackedStringArray("camera", "camera_forward", "mace_anim_player", "light_anim_player", "walk_pivot", "mace_sounds", "gore_sounds", "dispel_sound", "recall_sound", "volley_sounds", "personal_light_sprite", "fake_light") instance=ExtResource("5_kxbvh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 camera = NodePath("Pitch/Camera3D")
 camera_forward = NodePath("Pitch/Camera3D/Node3D")
 mace_anim_player = NodePath("MacePlayer")
@@ -109,9 +111,6 @@ recall_sound = NodePath("Pitch/Recall")
 volley_sounds = [NodePath("Pitch/Volley"), NodePath("Pitch/Volley2")]
 personal_light_sprite = NodePath("Center/WalkPivot/Personalight")
 fake_light = NodePath("FakeLight")
-
-[node name="MultiMeshInstance3D" type="MultiMeshInstance3D" parent="SubViewportContainer/SubViewport/Game"]
-multimesh = SubResource("MultiMesh_d243f")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="SubViewportContainer/SubViewport/Game"]
 transform = Transform3D(0.258819, -0.683013, 0.683013, 0, 0.707107, 0.707107, -0.965926, -0.183013, 0.183013, 0, 3, 0)
